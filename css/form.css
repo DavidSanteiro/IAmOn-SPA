@@ -1,0 +1,152 @@
+.logo {
+    display: block;
+    margin: 50px auto;
+}
+
+/* Estilos para el contenedor del formulario */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    margin: auto;
+    padding: 2.5rem;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+/* Estilos para los campos de entrada de texto */
+.form-input {
+    display: block;
+    width:  calc(100% - 20px);
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: text;
+}
+
+/* Estilos para las etiquetas de los campo de texto*/
+.form-label {
+    display: block;
+    color: grey;
+    margin-bottom: 5px;
+}
+
+/* Estilos para checkbox y su label */
+.form-input[type="checkbox"] {
+  display: flex;
+  margin-right: 10px;
+  margin-left: 1rem;
+  width: min-content;
+  cursor: pointer;
+}
+.checkbox_label{
+  display: inline-flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Estilo para aviso */
+.form-warning {
+  display: none;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 15px;
+  background-color: var(--warning_background);
+}
+.form-warning > p {
+  margin: 0;
+}
+
+
+/* Estilo para mostrar aviso cuando se selecciona el checkbox */
+.form-input[type="checkbox"]:checked ~ .form-warning {
+  display: block;
+}
+
+/* Estilos para el botón de enviar */
+.form-submit {
+    display: block;
+    width: 100%;
+    padding: 10px;
+
+    background-color: var(--button_submit);
+    color: #fff;
+
+    border: none;
+    border-radius: 5px;
+    
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Estilos para el botón de delete */
+.form-delete {
+  display: inline-block;
+  width: calc(50% - 10px);
+  padding: 10px;
+  margin-top: 15px;
+  margin-left: 7.5px;
+
+  background-color: var(--button_delete);
+  color: #fff;
+
+  border: none;
+  border-radius: 5px;
+  
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Estilos para el botón de cancelar */
+.form-cancel {
+  display: inline-block;
+  width: calc(50% - 10px);
+  padding: 10px;
+  margin-top: 15px;
+  margin-right: 7.5px;
+
+  background-color: var(--button_cancel);
+  color: #fff;
+
+  border: none;
+  border-radius: 5px;
+  
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.button-all-width {
+  width: 100%;
+	margin-right: 0;
+	margin-left: 0;
+}
+
+/* Estilos para el enlace de "¿Olvidaste tu contraseña?" */
+.form-link {
+    display: block;
+    text-align: right;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    color: var(--form_link);
+    text-decoration: none;
+}
+
+/* Estilos para enlaces fuera de la caja del formulario */
+.link {
+    color: var(--form_link);
+    text-decoration: none;
+}
+
+/* mobile layout: single colum, all items occupy the entire row, so wrap */
+.form-container {
+  flex-basis: 100%;
+}
+
+/* Medium devices (960px and up) */
+@media (min-width: 400px) {
+  .form-container {
+    max-width: 400px;
+  }
+}

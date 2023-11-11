@@ -1,0 +1,45 @@
+/* mobile layout: single colum, all items occupy the entire row, so wrap */
+header, main, footer {
+    flex-basis: 100%;
+}
+
+body{
+    display: flex;
+    flex-flow: row wrap;
+}
+  
+/* Medium devices (desktops, 960px and up) */
+@media (min-width: 500px) {
+	main {
+		max-width: 48%;
+	}
+}
+
+/* Large devices (large desktops, 1800px and up) */
+@media (min-width: 1800px) {
+	header{
+		display: none;
+	}
+	nav{
+		display: flex;
+	}
+	main {
+		max-width: 41%;
+	}
+}
+
+
+  /* Ajuste del div de visualización de cambios de div */
+
+.switch-data-visualization{
+    margin: 0, auto;
+
+    justify-content: center;
+
+    border-radius: 0;
+    background-color: inherit;
+
+    box-shadow: none;
+
+    order: 3
+}

@@ -1,0 +1,344 @@
+:root {
+  --switch_slider: white;
+
+  --switch_on_background: #80bd7a;
+  --switch_on_label: #d4f321;
+  
+  --switch_off_background: #e0e0e0;
+  --switch_off_label: #ccc;
+  
+  --header-nav_background: #26990028;
+  --body_background: #f0f0f0;
+  --main_background: #fff;
+
+  --flash_positive_background: #4CAF50;
+  --flash_negative_background: #f44336;
+
+  --button_submit: #269900;
+  --button_delete: #ff0000;
+  --button_cancel: #cccccc;
+
+	--warning_background: #ffea97;
+
+  --form_link: #269900;
+}
+
+h1, h2, h3, h4, h5, h6, label, p, a {
+    font-family: sans-serif,'Montserrat', Arial;
+}
+
+body{
+    background-color: var(--body_background);
+}
+
+#flash--positive, #flash--negative {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  }
+  
+#flash--positive {
+  background-color: var(--flash_positive_background);
+  color: white;
+}
+
+#flash--negative {
+  background-color: var(--flash_negative_background);
+  color: white;
+}
+
+#flash--positive.show, #flash--negative.show {
+  opacity: 1;
+}
+
+
+h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  width: 100%;
+}
+
+h2 {
+  text-align: center;
+  color: grey;
+  width: 100%;
+  font-size: 1.3rem;
+  font-weight: lighter;
+}
+
+footer{
+  order: 4;
+}
+
+
+/* Código CSS barra superior y barra lateral */
+
+.logo_iamon{
+  height: 45px;
+}
+
+header p, nav p{
+  font-weight: bold;
+  margin: 0px 0px 0px 0px;
+}
+
+nav > a, header > a{
+  text-decoration: blink;
+  color: black;
+  text-align: center;
+}
+
+header{
+  background-color: var(--header-nav_background);
+  display:flex;
+  justify-content: space-between; /* distribuir horizontalmente los elementos*/
+  align-items: center; /*centra verticalmente*/
+  padding: 10px 10px 10px 10px; /* orden del padding: arriba-derecha-abajo-izquierda*/
+  border-radius: 5px;
+  margin-bottom: 1em; /*medida relativa al tamaño del texto*/
+  order: 1;
+}
+
+header .user_info{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  width: min-content;
+  padding-left: 10px;
+  border-left: 1px solid #000000;
+}
+header .user_info h4{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*#icon_main_menu:hover{
+  cursor: pointer;
+}*/
+  
+nav{
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  padding: 20px 0px 20px 0px;
+  max-width: 250px;
+  background-color: var(--header-nav_background);
+}
+
+nav .user_info{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-top: 1px solid #000000;
+  justify-content: center;
+  align-items: center;
+}
+  
+.user_info img{
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+#user_name{
+  width: auto;
+  white-space: nowrap;
+  margin: 0%;
+}
+
+nav #id_logout{
+  align-self: flex-start;
+  margin: 0px 0px 0px 50px;
+}
+
+/* Código CSS para contenido de la páina */
+main{
+  margin-top: 0px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border-radius: 5px;
+  background-color: var(--main_background);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+  order: 2;
+  justify-content: space-around;
+}
+
+/* Código CSS para los switches*/
+.on{
+  background-color: var(--switch_on_background);
+  .circle{
+    background-color: var(--switch_on_label);
+  }
+}
+.off{
+  background-color: var(--switch_off_background);
+  .circle{
+    background-color: var(--switch_off_label);
+  }
+}
+.divSwitch{
+
+  display: block;
+  position: relative;
+  width: 15rem;
+  height: 10rem;
+  /*background-color: var(--switch_on_background);*/
+  border-radius: 10px;
+  margin: 1rem;
+  padding: 1rem;
+
+  .submit_embedded{
+    display: contents;
+  }
+
+  .form-input{
+    width: 3rem;
+  }
+
+  .switch_name{
+    position: absolute;
+    max-width: calc(15rem - 55px);
+    top: 0px;
+    left: 70px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .switch_time_label{
+    position: absolute;
+    top: 58px;
+    left: 1rem;
+    color: black;
+  }
+
+  .switch_time{
+    position: absolute;
+    top: 50px;
+    left: 80px;
+  }
+
+  .switch_time_poweredOff{
+    position: absolute;
+    top: 2.2rem;
+    left: 10rem;
+    font-size: smaller;
+    max-width: 6rem;
+  }
+
+  .switch_time_poweredOn{
+    position: absolute;
+    top: 40px;
+    left: 1rem;
+    max-width: 15rem;
+  }
+
+  .switch_owner{
+    position: absolute;
+    bottom: 0.5rem;
+    left: 1rem;
+    width: 8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .switch_button1{
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+
+    height: 30px;
+    width: 30px;
+  }
+  
+  .switch_button2{
+    position: absolute;
+    bottom: 1rem;
+    right: calc(1rem + 10px + 30px);
+
+    height: 30px;
+    width: 30px;
+  }
+
+
+  .switch_button3{
+    position: absolute;
+    bottom: 1rem;
+    right: calc(1rem + 20px + 60px);
+
+    height: 30px;
+    width: 30px;
+  }
+
+  /* Estilos para ocultar los inputs por defecto */
+  .switch_boton-radio {
+    display: none;
+  }
+
+  /* Estilos para el label de los botones */
+  .switch_boton-label {
+    display: contents;
+    cursor: pointer;
+    margin: 10px;
+    border: 2px solid #333;
+    padding: 5px;
+    background-color: #EEE;
+  }
+
+  /* Estilos para ocultar el input de texto */
+  .texto-input {
+    display: none;
+  }
+
+  /* Estilos para mostrar el texto del input cuando el radio button está seleccionado */
+  .switch_boton-radio:checked ~ img ~ .texto-input {
+    display: inline-block !important;
+    position: absolute;
+    bottom: 3rem;
+    left: 1rem;
+    width: calc(15rem - 20px);
+  }
+
+  .circle {
+    width: 25.5px;
+    height: 25.5px;
+    /*background-color: var(--switch_on_label);*/
+    border-radius: 50%; /* Esto crea la forma circular */
+  }
+}
+
+.empty_img{
+	height: 300px;
+	width: 300px;
+}
+
+.add_switch{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	height: 80px;
+	width: 80px;
+}
+
+#div_view {
+	align-items: center;
+}

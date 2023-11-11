@@ -1,0 +1,68 @@
+
+body{
+  display: flex;
+  flex-flow: row wrap;
+}
+
+#new_switch{
+	display: flex;
+	justify-content: center;
+  margin-bottom: 20px;
+  align-self: center;
+  width: calc(100% - 40px);
+}
+
+.empty_img{
+  height: 300px;
+  width: 300px;
+}
+
+.add_switch{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 80px;
+  width: 80px;
+}
+
+#mySwitches{
+  order: 2;
+}
+
+#friendsSwitches{
+  order: 3;
+}
+
+footer{
+  order: 4;
+}
+
+/* mobile layout: single colum, all items occupy the entire row, so wrap */
+header, main, footer {
+  flex-basis: 100%;
+}
+
+/* Medium devices (desktops, 960px and up) */
+@media (min-width: 1250px) {
+	main {
+		max-width: 48%;
+	}
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1800px) {
+	body{
+		display: flex;
+	}
+
+	header {
+		display: none;
+	}
+
+	nav {
+		display: flex;
+	}
+
+	main {
+		max-width: 41%;
+	}
+}
