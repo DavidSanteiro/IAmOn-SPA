@@ -7,7 +7,8 @@ RewriteEngine On
 # RewriteBase /dir/subdir/rest
 
 # RewriteBase /mvcblog/rest
-RewriteBase /www/rest
+#RewriteBase /www/rest
+RewriteBase /rest
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
