@@ -62,6 +62,10 @@ class BaseRest {
 		die($message);
 	}
 
+
+
+	
+
 	/**
 	 * The HTTP 204 No Content success status response code indicates that a request has succeeded, but that the client
 	 * doesn't need to navigate away from its current page.
@@ -94,6 +98,24 @@ class BaseRest {
 		die(json_encode($toJson));
 	}
 
+
+
+
+	#[NoReturn] public function answerJson201 (array $toJson): void
+	{
+		header($_SERVER['SERVER_PROTOCOL'].' 201 Created');
+		header('Content-Type: application/json');
+		die(json_encode($toJson));
+	}
+
+
+	#[NoReturn] public function answerJson204 (array $toJson): void
+	{
+		header($_SERVER['SERVER_PROTOCOL'].' 204 Eliminated');
+		header('Content-Type: application/json');
+		die(json_encode($toJson));
+	}
+
 	/**
 	 *The server cannot or will not process the request due to something that is perceived to be a client error
 	 * (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
@@ -113,7 +135,7 @@ class BaseRest {
 	 * @param $message string an explanation of the error.
 	 * @return void
 	 */
-	#[NoReturn] private function error401($message): void
+	#[NoReturn] public function error401($message): void
 	{
 		header($_SERVER['SERVER_PROTOCOL'].' 401 Unauthorized');
 		header('WWW-Authenticate: Basic realm="Rest API of MVCBLOG"');
@@ -143,6 +165,13 @@ class BaseRest {
 	#[NoReturn] public function error404($message): void
 	{
 		header($_SERVER['SERVER_PROTOCOL'].' 404 Not Found');
+		die($message);
+	}
+
+
+	#[NoReturn] public function error409($message): void
+	{
+		header($_SERVER['SERVER_PROTOCOL'].' 409 Conflict');
 		die($message);
 	}
 
