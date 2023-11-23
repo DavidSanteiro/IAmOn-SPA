@@ -35,6 +35,7 @@ define("DEFAULT_ACTION", "login");
 * @author lipido <lipido@gmail.com>
 */
 function run() {
+	die("Usar rest!");
 	// invoke action!
 	try {
 		if (!isset($_GET["controller"])) {

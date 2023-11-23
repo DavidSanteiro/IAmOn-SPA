@@ -3,6 +3,8 @@
 require_once(__DIR__."/../model/Switch.php");
 require_once(__DIR__."/../model/SwitchMapper.php");
 require_once(__DIR__."/BaseRest.php");
+require_once (__DIR__."/URIDispatcher.php");
+require_once("/usr/share/php/Mail.php");
 
 /**
  * Class SwitchRest
@@ -22,8 +24,6 @@ class SwitchRest extends BaseRest {
 	}
 
 	public function toggleButtonPublic($data){
-		//TODO
-		parent::error503("toggleButtonPublic Not implemented");
 
 		$currentUser = parent::authenticateUser();
 
@@ -64,14 +64,13 @@ class SwitchRest extends BaseRest {
 			$switch->setPowerOff(new DateTime());
 		}
 
-		//TODO incorporar las funciones de correo
-//		// Enviar email a los suscriptores
-//		$suscribers = $this->switchMapper->phpEmail($switch->getPublicUuid());
-//		$nombre_switch = $switch->getSwitchName();
-//		$user_switch_name = $switch->getOwner()->getUsername();
-//		foreach ($suscribers as $suscriber){
-//			$this->enviarCorreo($suscriber->getEmail(), $suscriber->getUsername(), $nombre_switch, $user_switch_name);
-//		}
+		// Enviar email a los suscriptores
+		$suscribers = $this->switchMapper->phpEmail($switch->getPublicUuid());
+		$nombre_switch = $switch->getSwitchName();
+		$user_switch_name = $switch->getOwner()->getUsername();
+		foreach ($suscribers as $suscriber){
+			$this->enviarCorreo($suscriber->getEmail(), $suscriber->getUsername(), $nombre_switch, $user_switch_name);
+		}
 
 		try {
 			// Validate Switch object
@@ -100,8 +99,6 @@ class SwitchRest extends BaseRest {
 	}
 
 	public function toggleButtonPrivate($data){
-		//TODO
-		parent::error503("toggleButtonPrivate Not implemented");
 
 		// Get data from HTTP message
 		$private_uuid = $data->switch_private_uuid;
@@ -135,14 +132,13 @@ class SwitchRest extends BaseRest {
 			$switch->setPowerOff(new DateTime());
 		}
 
-		//TODO incorporar las funciones de correo
-//		// Enviar email a los suscriptores
-//		$suscribers = $this->switchMapper->phpEmail($switch->getPublicUuid());
-//		$nombre_switch = $switch->getSwitchName();
-//		$user_switch_name = $switch->getOwner()->getUsername();
-//		foreach ($suscribers as $suscriber){
-//			$this->enviarCorreo($suscriber->getEmail(), $suscriber->getUsername(), $nombre_switch, $user_switch_name);
-//		}
+		// Enviar email a los suscriptores
+		$suscribers = $this->switchMapper->phpEmail($switch->getPublicUuid());
+		$nombre_switch = $switch->getSwitchName();
+		$user_switch_name = $switch->getOwner()->getUsername();
+		foreach ($suscribers as $suscriber){
+			$this->enviarCorreo($suscriber->getEmail(), $suscriber->getUsername(), $nombre_switch, $user_switch_name);
+		}
 
 		try {
 			// Validate Switch object
@@ -171,8 +167,6 @@ class SwitchRest extends BaseRest {
 	}
 
 	public function add($data){
-		//TODO
-		parent::error503("add Not implemented");
 
 		$currentUser = parent::authenticateUser();
 
@@ -181,10 +175,8 @@ class SwitchRest extends BaseRest {
 		$switch_description = $data->switch_description;
 
 		// The user of the Switch is the currentUser (user in session)
-		$switch->setOwner($currentUser);
-
-		$switch->setSwitchName($switch_name);
-		$switch->setDescription($switch_description);
+		$switch = new MySwitch($switch_name, $currentUser, NULL, NULL,
+										$switch_description, NULL, NULL);
 
 		try {
 			// Validate switch object
@@ -215,8 +207,6 @@ class SwitchRest extends BaseRest {
 	}
 
 	public function edit($data){
-		//TODO
-		parent::error503("edit Not implemented");
 
 		$currentUser = parent::authenticateUser();
 
@@ -237,7 +227,7 @@ class SwitchRest extends BaseRest {
 		}
 
 		if($switch->getOwner()->getUsername() != $currentUser->getUsername()){
-			parent::error403("Logged user is not the author of the switch uuid ".$public_uuid);
+			parent::error403("Logged user is not the author of the switch uuid ".$switch_public_uuid);
 		}
 
 		$switch->setSwitchName($switch_name);
@@ -272,8 +262,6 @@ class SwitchRest extends BaseRest {
 	}
 
 	public function delete($data){
-		//TODO
-		parent::error503("delete Not implemented");
 
 		$currentUser = parent::authenticateUser();
 
@@ -291,7 +279,7 @@ class SwitchRest extends BaseRest {
 		}
 
 		if($switch->getOwner()->getUsername() != $currentUser->getUsername()){
-			parent::error403("Logged user is not the author of the switch uuid ".$public_uuid);
+			parent::error403("Logged user is not the author of the switch uuid ".$switch_public_uuid);
 		}
 
 		try {
@@ -310,8 +298,6 @@ class SwitchRest extends BaseRest {
 	}
 
 	public function list($user_name){
-		//TODO
-		parent::error503("list Not implemented");
 
 		$currentUser = parent::authenticateUser();
 
@@ -344,8 +330,6 @@ class SwitchRest extends BaseRest {
 	}
 
 	public function listSubscribed($user_name){
-		//TODO
-		parent::error503("listSubscribed Not implemented");
 
 		$currentUser = parent::authenticateUser();
 
@@ -377,8 +361,6 @@ class SwitchRest extends BaseRest {
 	}
 
 	public function getPublic($switch_public_uuid){
-		//TODO
-		parent::error503("getPublic Not implemented");
 
 		if (!preg_match(SwitchMapper::REGEX_UUID, $switch_public_uuid)) {
 			parent::error400(array("switch_public_uuid" => "La variable no es un UUID."));
@@ -407,8 +389,6 @@ class SwitchRest extends BaseRest {
 	}
 
 	public function getPrivate($switch_private_uuid){
-		//TODO
-		parent::error503("getPrivate Not implemented");
 
 		if (!preg_match(SwitchMapper::REGEX_UUID, $switch_private_uuid)) {
 			parent::error400(array("switch_private_uuid" => "La variable no es un UUID."));
@@ -437,32 +417,19 @@ class SwitchRest extends BaseRest {
 		}
 	}
 
-//	public function postUser($data) {
-//		$user = new User($data->username, $data->password);
-//		try {
-//			$user->checkIsValidForRegister();
-//
-//			$this->switchMapper->save($user);
-//
-//			header($_SERVER['SERVER_PROTOCOL'].' 201 Created');
-//			header("Location: ".$_SERVER['REQUEST_URI']."/".$data->username);
-//		}catch(ValidationException $e) {
-//			http_response_code(400);
-//			header('Content-Type: application/json');
-//			echo(json_encode($e->getErrors()));
-//		}
-//	}
-//
-//	public function login($username) {
-//		$currentLogged = parent::authenticateUser();
-//		if ($currentLogged->getUsername() != $username) {
-//			header($_SERVER['SERVER_PROTOCOL'].' 403 Forbidden');
-//			echo("You are not authorized to login as anyone but you");
-//		} else {
-//			header($_SERVER['SERVER_PROTOCOL'].' 200 Ok');
-//			echo("Hello ".$username);
-//		}
-//	}
+	private function enviarCorreo($user_email,$user_name,$switch_name,$user_switch_name):void{
+		// Reemplaza esto con tu dirección de correo electrónico
+
+		$headers['From']    = 'noresponder-iamon@hotmail.com';
+		$headers['To']      = $user_email;
+		$headers['Subject'] = 'Un switch de '.$user_switch_name.' se ha encendido!';
+		$body = $user_name.' el switch '.$switch_name.' al que estas suscrito, ahora está encendido!';
+		$params['host'] = '172.18.96.1'; //esta es la IP de la máquina host cuando se usa docker, allí hay un fakesmtp
+		$params['port'] = '2525'; // puerto del fakesmtp
+		// Create the mail object using the Mail::factory method
+		$mail_object = Mail::factory('smtp', $params);
+		$mail_object->send($user_email, $headers, $body);
+	}
 }
 
 // URI-MAPPING for this Rest endpoint

@@ -78,6 +78,7 @@ class URIDispatcher {
 		$dispatchAsCORS = false;
 		$allowedMethods = array();
 		foreach($this->mappings as $mapping) {
+
 			$parameters = array();
 			if ($this->match_request( $mapping["http_method"],
 			$mapping["url_pattern"],
