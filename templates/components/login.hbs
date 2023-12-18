@@ -1,0 +1,27 @@
+<main class="form-container">
+    {{#if isLogged}}
+
+        {{i18n 'Your are logged. Logout first'}}
+
+    {{else}}
+
+      <h2>{{i18n 'Welcome back'}}</h2>
+      <h1>{{i18n 'Log in to your account'}}</h1>
+
+      {{#i18n}}{{loginError}}{{/i18n}}<br>
+
+      <form>
+          <label for="id_userNameRegister" class="form-label">{{i18n 'Username'}}</label>
+          <input type="text" class="form-input" placeholder="{{i18n 'Username'}}" name="user_name" id="id_userNameLogin" required>
+
+          <label for="id_userPasswordRegister" class="form-label">{{i18n 'Password'}}</label>
+          <input type="password" class="form-input" placeholder="{{i18n 'Password'}}" name="user_password" id="id_userPasswordLogin" required>
+
+          <input type="submit" class="form-submit" id='id_submitButtonLogin' value="{{i18n 'Login'}}">
+      </form>
+
+      <p>{{i18n 'Not user?'}} <a class="link" href="#register" id='id_registerLink'>{{i18n 'Register here!'}}</a></p>
+
+
+    {{/if}}
+</main>
