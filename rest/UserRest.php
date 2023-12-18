@@ -4,6 +4,11 @@ require_once(__DIR__."/../model/User.php");
 require_once(__DIR__."/../model/UserMapper.php");
 require_once(__DIR__."/BaseRest.php");
 
+require_once '../vendor/autoload.php';
+
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 /**
 * Class UserRest
 *
@@ -39,21 +44,28 @@ class UserRest extends BaseRest {
 
 	
 
-	public function login($user_name, $user_password) {
+	public function login($data) {
 		// Comprueba si el usuario existe
 	
 		try {
 			// Verifica si la contraseña es correcta
-			if ($this->userMapper->isValidUser($user_name, $user_password)) {
-				// Genera un bearer_token y lo establece como una cookie
-				$bearer_token = $this->generateBearerToken();
-				setcookie('bearer_token', $bearer_token, time() + (86400 * 30), "/"); // 86400 = 1 day
-	
+			if ($this->userMapper->isValidUser($data->user_name, $data->user_password)) {
+
+                $payload = [
+                    'iss' => 'http://localhost',
+                    'aud' => $data->user_name,
+                    'iat' => time(),
+                    'exp' => time() + (86400 * 30) // Los tokens expiran en 1 día
+                ];
+
+                $jwt_token = JWT::encode($payload, BaseRest::$jwt_key, 'HS256');
+
 				// Devuelve una respuesta HTTP 200
 				parent::answerJson200(array(
-					"user_name" => $user_name,
-					"bearer_token" => $bearer_token
+					"user_name" => $data->user_name,
+					"jwt_token" => $jwt_token
 				));
+
 			} else {
 				// Si la contraseña es incorrecta, devuelve una respuesta HTTP 401
 				parent::error401("Contraseña incorrecta o usuario no existente.");
@@ -72,23 +84,23 @@ class UserRest extends BaseRest {
 	}
 
 
-	public function register($user_name, $user_email, $user_password) {
+	public function register($data) {
 		
 		try {
 			// Comprueba si el nombre de usuario o el correo electrónico ya existen
-			if ($this->userMapper->userEmailExists($user_email)) {
+			if ($this->userMapper->userEmailExists($data->user_email)) {
 				// Si existen, devuelve una respuesta HTTP 409
 				parent::error409("El correo electrónico ya existe.");
-			} else if ($this->userMapper->usernameExists($user_name)) {
+			} else if ($this->userMapper->usernameExists($data->user_name)) {
 				// Si existen, devuelve una respuesta HTTP 409
 				parent::error409("El nombre de usuario ya existe.");
 			}else {
 				// Si no existen, inserta el nuevo usuario en la base de datos
-				$user = new User($user_name, $user_email, $user_password);
+				$user = new User($data->user_name, $data->user_email, $data->user_password);
 				$this->userMapper->save($user);
 	
 				// Devuelve una respuesta HTTP 201
-				parent::answerJson201(array("user_name" => $user_name, "user_email" => $user_email));
+				parent::answerJson201(array("user_name" => $data->user_name, "user_email" => $data->user_email));
 			}
 		} catch (Exception $e) {
 			// Si la base de datos falla o hay un error imprevisto
@@ -113,15 +125,15 @@ class UserRest extends BaseRest {
 		}
 	}
 
-	public function resetPassword ($user_email){
+	public function resetPassword ($data){
 		// Comprueba si el usuario existe
 		try {
 			// Verifica si la contraseña es correcta
-			if ($this->userMapper->userEmailExists($user_email)) {
+			if ($this->userMapper->userEmailExists($data->user_email)) {
 				// Si existe, devuelve una respuesta HTTP 200 porque lo encontró
-				$user_password = $this->userMapper->recuperarPassword($user_email);
-				$this->userMapper->enviarCorreoPassword($user_email, $user_password);
-				parent::answerJson200(array("user_email" => $user_email));
+				$user_password = $this->userMapper->recuperarPassword($data->user_email);
+				$this->userMapper->enviarCorreoPassword($data->user_email, $user_password);
+				parent::answerJson200(array("user_email" => $data->user_email));
 			} else {
 				// Si el email no existe, devuelve una respuesta HTTP 401
 				parent::error404("Email no existente.");
@@ -133,13 +145,13 @@ class UserRest extends BaseRest {
 	
 	}
 
-	public function editAccount($user_name, $user_password, $user_new_password, $user_email){
+	public function editAccount($data){
 		try {
-			if ($this->userMapper->userEmailExists($user_email)) {
-				$current_password = $this->userMapper->recuperarPassword($user_email);
-				if ($current_password == $user_password) {
-					$this->userMapper->updateUser($user_name, $user_new_password, $user_email);
-					parent::answerJson200(array("user_email" => $user_email));
+			if ($this->userMapper->userEmailExists($data->user_email)) {
+				$current_password = $this->userMapper->recuperarPassword($data->user_email);
+				if ($current_password == $data->user_password) {
+					$this->userMapper->updateUser($data->user_name, $data->user_new_password, $data->user_email);
+					parent::answerJson200(array("user_email" => $data->user_email));
 				} else {
 					parent::error403("Forbidden");
 				}
@@ -151,14 +163,14 @@ class UserRest extends BaseRest {
 		}
 	}
 
-	public function deleteAccount($user_name, $user_password){
+	public function deleteAccount($data){
 		try {
-			if ($this->userMapper->usernameExists($user_name)) {
-				$user_email = $this->userMapper->recuperarEmail($user_name);
+			if ($this->userMapper->usernameExists($data->user_name)) {
+				$user_email = $this->userMapper->recuperarEmail($data->user_name);
 				$current_password = $this->userMapper->recuperarPassword($user_email);
-				if ($current_password == $user_password) {
-					$this->userMapper->deleteUser($user_name);
-					parent::answerJson204(array("user_name" => $user_name));
+				if ($current_password == $data->user_password) {
+					$this->userMapper->deleteUser($data->user_name);
+					parent::answerJson204(array("user_name" => $data->user_name));
 				} else {
 					parent::error401("Unauthorized");
 				}
@@ -169,6 +181,23 @@ class UserRest extends BaseRest {
 			parent::error500();
 		}
 	}
+
+    public function checkIfNotExpired($data){
+        try {
+            $currentUser = parent::authenticateUser();
+
+            $toRet = array();
+                $toRet[] = [
+                    "user_name" => $currentUser
+                ];
+
+            parent::answerJson200($toRet);
+
+        } catch (Exception $e) {
+            // If database fails or there is an unforeseen error
+            parent::error500();
+        }
+    }
 	
 }
 
@@ -182,4 +211,5 @@ URIDispatcher::getInstance()
 ->map("GET", "/account/userAvailability/$1", array($userRest,"checkUserAvailability"))
 ->map("POST", "/account/passwordReset", array($userRest,"resetPassword"))
 ->map("PUT", "/account", array($userRest,"editAccount"))
-->map("DELETE", "/account", array($userRest,"deleteAccount"));
+->map("DELETE", "/account", array($userRest,"deleteAccount"))
+->map("PUT", "/account", array($userRest,"checkIfNotExpired"));

@@ -301,6 +301,7 @@ class SwitchRest extends BaseRest {
 
 		$currentUser = parent::authenticateUser();
 
+
 		if($user_name != $currentUser->getUsername()){
 			parent::error403("Logged user is not the user specified");
 		}
@@ -316,7 +317,9 @@ class SwitchRest extends BaseRest {
 					"switch_private_uuid" => $switch->getPrivateUuid(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
-					"switch_last_power_on" => $switch->getLastPowerOn()->format(SwitchMapper::DATE_FORMAT),
+					"switch_last_power_on" =>
+                        is_null($switch->getLastPowerOn()) ? null :
+                            $switch->getLastPowerOn()->format(SwitchMapper::DATE_FORMAT),
 					"switch_power_off" => $switch->getPowerOff()
 				];
 			}

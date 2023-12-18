@@ -1,0 +1,33 @@
+<main class="form-container">
+  {{#if isLogged}}
+
+    {{i18n 'Your are logged. Logout first'}}
+
+  {{else}}
+
+      <h2>{{i18n 'Welcome to IAmOn'}}</h2>
+      <h1>{{i18n 'Register'}}</h1>
+
+      <form>
+        <label for="id_userNameRegister" class="form-label">{{i18n 'Username'}}</label>
+        <input type="text" class="form-input" placeholder="{{i18n 'Username'}}" name="user_name"
+               id="id_userNameRegister" required>
+        {{#i18n}}{{registerErrors.username}}{{/i18n}}
+
+        <label for="id_userEmailRegister" class="form-label">{{i18n 'Email'}}</label>
+        <input type="email" class="form-input" placeholder="{{i18n 'Email'}}" name="user_email"
+               id="id_userEmailRegister">
+        {{#i18n}}{{registerErrors.email}}{{/i18n}}
+
+        <label for="id_userPasswordRegister" class="form-label">{{i18n 'Password'}}</label>
+        <input type="password" class="form-input" placeholder="{{i18n 'Password'}}" name="user_password"
+               id="id_userPasswordRegister" required>
+        {{#i18n}}{{registerErrors.passwd}}{{/i18n}}
+
+        <input type="submit" class="form-submit" id='id_submitButtonRegister' value="{{i18n 'Login'}}">
+      </form>
+
+      <p>{{i18n 'Already registered?'}}<a class="link" href="#login" id="id_loginLink">{{i18n 'Go to login'}}</a></p>
+
+  {{/if}}
+</main>

@@ -1,5 +1,10 @@
 <?php
 
+require_once '../vendor/autoload.php';
+
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 use JetBrains\PhpStorm\NoReturn;
 
 require_once(__DIR__."/../model/User.php");
@@ -16,6 +21,7 @@ require_once(__DIR__."/../model/UserMapper.php");
 * @author lipido <lipido@gmail.com>
 */
 class BaseRest {
+    protected static $jwt_key = 'iamon_key';
 	public function __construct() { }
 
 	/**
@@ -29,20 +35,35 @@ class BaseRest {
 	* @return User the user just authenticated.
 	*/
 	public function authenticateUser() {
-		if (!isset($_SERVER['PHP_AUTH_USER'])) {
-			$this->error401('This operation requires authentication');
-		}
-		else {
-			$userMapper = new UserMapper();
-			if ($userMapper->isValidUser(
-			$_SERVER['PHP_AUTH_USER'],
-			$_SERVER['PHP_AUTH_PW'])) {
+        $authorizationHeader = apache_request_headers()["Authorization"];
 
-				return new User($_SERVER['PHP_AUTH_USER']);
-			} else {
-				$this->error401('The username/password is not valid');
-			}
-		}
+        if (!isset($authorizationHeader) || empty($authorizationHeader)){
+            $this->error401('This operation requires authentication');
+        }else{
+            // Separar el tipo de autenticación y el token
+            list($type, $token) = explode(' ', $authorizationHeader, 2);
+
+            // Verificar si el tipo es 'Bearer'
+            if ($type === 'Bearer') {
+				
+                // Usar firebase/php-jwt para verificar y decodificar el token JWT
+                $decoded = JWT::decode($token, new Key(BaseRest::$jwt_key, 'HS256'));
+                // Pass a stdClass in as the third parameter to get the decoded header values
+                $decoded_array = (array) JWT::decode($token, new Key(BaseRest::$jwt_key, 'HS256'));
+
+                $userMapper = new UserMapper();
+                // TODO comprobar fecha "exp"
+                if (!empty($decoded_array["aud"]) && $userMapper->usernameExists($decoded_array["aud"])) {
+                    return new User(username: $decoded_array["aud"]);
+                }else{
+                    $this->error401('This operation requires authentication');
+                }
+
+            } else {
+                // Tipo de autenticación no soportado
+                $this->error400(array('Tipo de autenticación no soportado'));
+            }
+        }
 	}
 
 	/**
@@ -138,7 +159,7 @@ class BaseRest {
 	#[NoReturn] public function error401($message): void
 	{
 		header($_SERVER['SERVER_PROTOCOL'].' 401 Unauthorized');
-		header('WWW-Authenticate: Basic realm="Rest API of MVCBLOG"');
+	//	header('WWW-Authenticate: Basic realm="Rest API of MVCBLOG"');
 		die($message);
 	}
 

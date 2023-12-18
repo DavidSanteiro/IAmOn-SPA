@@ -10,6 +10,12 @@
     <option name="highlightLevel" value="WARNING" />
     <option name="transferred" value="true" />
   </component>
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/firebase/php-jwt" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+    </include_path>
+  </component>
   <component name="PhpInterpreters">
     <interpreters>
       <interpreter id="c1ff23e8-30ef-4dea-aeed-f02c7725ff47" name="lampserver:latest" home="docker://DATA" auto="false" debugger_id="php.debugger.XDebug">
