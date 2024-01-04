@@ -66,7 +66,7 @@ class UserService {
     return new Promise((resolve, reject) => {
 
       $.ajax({
-        url: AppConfig.backendServer+'/rest/account',
+        url: AppConfig.backendServer+'/rest/account/checkToken',
         method: 'PUT',
         data: JSON.stringify(userPasswd),
         contentType: 'application/json'

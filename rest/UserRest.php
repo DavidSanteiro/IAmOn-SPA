@@ -212,4 +212,4 @@ URIDispatcher::getInstance()
 ->map("POST", "/account/passwordReset", array($userRest,"resetPassword"))
 ->map("PUT", "/account", array($userRest,"editAccount"))
 ->map("DELETE", "/account", array($userRest,"deleteAccount"))
-->map("PUT", "/account", array($userRest,"checkIfNotExpired"));
+->map("PUT", "/account/checkToken", array($userRest,"checkIfNotExpired"));

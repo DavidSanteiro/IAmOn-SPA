@@ -2,6 +2,7 @@
 
 require_once '../vendor/autoload.php';
 
+use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -35,34 +36,40 @@ class BaseRest {
 	* @return User the user just authenticated.
 	*/
 	public function authenticateUser() {
-        $authorizationHeader = apache_request_headers()["Authorization"];
+        try {
+            $authorizationHeader = apache_request_headers()["Authorization"];
 
-        if (!isset($authorizationHeader) || empty($authorizationHeader)){
-            $this->error401('This operation requires authentication');
-        }else{
-            // Separar el tipo de autenticación y el token
-            list($type, $token) = explode(' ', $authorizationHeader, 2);
+            if (!isset($authorizationHeader) || empty($authorizationHeader)){
+                $this->error401('This operation requires authentication');
+            }else{
+                // Separar el tipo de autenticación y el token
+                list($type, $token) = explode(' ', $authorizationHeader, 2);
 
-            // Verificar si el tipo es 'Bearer'
-            if ($type === 'Bearer') {
-				
-                // Usar firebase/php-jwt para verificar y decodificar el token JWT
-                $decoded = JWT::decode($token, new Key(BaseRest::$jwt_key, 'HS256'));
-                // Pass a stdClass in as the third parameter to get the decoded header values
-                $decoded_array = (array) JWT::decode($token, new Key(BaseRest::$jwt_key, 'HS256'));
+                // Verificar si el tipo es 'Bearer'
+                if ($type === 'Bearer') {
 
-                $userMapper = new UserMapper();
-                // TODO comprobar fecha "exp"
-                if (!empty($decoded_array["aud"]) && $userMapper->usernameExists($decoded_array["aud"])) {
-                    return new User(username: $decoded_array["aud"]);
-                }else{
-                    $this->error401('This operation requires authentication');
+                    // Usar firebase/php-jwt para verificar y decodificar el token JWT
+                    $decoded = JWT::decode($token, new Key(BaseRest::$jwt_key, 'HS256'));
+                    // Pass a stdClass in as the third parameter to get the decoded header values
+                    $decoded_array = (array) JWT::decode($token, new Key(BaseRest::$jwt_key, 'HS256'));
+
+                    $userMapper = new UserMapper();
+
+                    if (!empty($decoded_array["aud"]) && $userMapper->usernameExists($decoded_array["aud"])) {
+                        return new User(username: $decoded_array["aud"]);
+                    }else{
+                        $this->error401('This operation requires authentication');
+                    }
+
+                } else {
+                    // Tipo de autenticación no soportado
+                    $this->error400(array('Tipo de autenticación no soportado'));
                 }
-
-            } else {
-                // Tipo de autenticación no soportado
-                $this->error400(array('Tipo de autenticación no soportado'));
             }
+        }catch (ExpiredException $exception){
+            $this->error401($exception->getMessage());
+        }catch (Exception){
+            $this->error500();
         }
 	}
 
