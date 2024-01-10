@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpDockerContainerSettings">
+    <list>
+      <map>
+        <entry key="c1ff23e8-30ef-4dea-aeed-f02c7725ff47">
+          <value>
+            <DockerContainerSettings>
+              <option name="envVars">
+                <list>
+                  <DockerEnvVarImpl>
+                    <option name="name" value="APACHE_ROOT" />
+                    <option name="value" value="C:\Users\David\PhpstormProjects\IAmOn-SPA" />
+                  </DockerEnvVarImpl>
+                  <DockerEnvVarImpl>
+                    <option name="name" value="PHP_DISPLAY_ERRORS" />
+                    <option name="value" value="On" />
+                  </DockerEnvVarImpl>
+                </list>
+              </option>
+              <option name="publishAllPorts" value="true" />
+              <option name="runCliOptions" value="" />
+              <option name="version" value="1" />
+              <option name="volumeBindings">
+                <list>
+                  <DockerVolumeBindingImpl>
+                    <option name="containerPath" value="/opt/project" />
+                    <option name="hostPath" value="$PROJECT_DIR$" />
+                  </DockerVolumeBindingImpl>
+                  <DockerVolumeBindingImpl>
+                    <option name="containerPath" value="/app" />
+                    <option name="hostPath" value="C:\Users\David\lampserver" />
+                  </DockerVolumeBindingImpl>
+                  <DockerVolumeBindingImpl>
+                    <option name="containerPath" value="/var/lib/mysql" />
+                    <option name="hostPath" value="C:\Users\David\lampserver" />
+                  </DockerVolumeBindingImpl>
+                </list>
+              </option>
+            </DockerContainerSettings>
+          </value>
+        </entry>
+      </map>
+    </list>
+  </component>
+</project>

@@ -6,6 +6,7 @@ use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
+use Firebase\JWT\SignatureInvalidException;
 use JetBrains\PhpStorm\NoReturn;
 
 require_once(__DIR__."/../model/User.php");
@@ -68,7 +69,9 @@ class BaseRest {
             }
         }catch (ExpiredException $exception){
             $this->error401($exception->getMessage());
-        }catch (\Firebase\JWT\SignatureInvalidException $exception){
+        }catch (SignatureInvalidException $exception) {
+            $this->error400($exception->getMessage());
+        }catch (UnexpectedValueException $exception){
             $this->error400($exception->getMessage());
         }catch (Exception $exception){
             $this->error500();

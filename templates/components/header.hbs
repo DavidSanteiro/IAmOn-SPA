@@ -1,0 +1,19 @@
+<div>
+  {{#if isLogged}}
+      <a href="#dashboard"><img src="img/logo.png" class="logo_iamon" alt="Logo IAmOn"></a>
+      <a href="#dashboard">Dashboard</a>
+      <div id="languagecontrol">Loading...</div>
+      <!--    TODO - Mostrar aquí el usuario en caso de que lo haya-->
+      <!--    <div class="user_info">-->
+      <!--      <?php if (isset($currentuser)): ?>-->
+      <!--      <img src="img/user.png" alt="Usuario">-->
+      <!--      <p id="user_name"><?= sprintf(i18n("Hello %s"), $currentuser) ?></p>-->
+      <!--      <p><a href="index.php?controller=users&amp;action=logout">(Logout)</a></p>-->
+      <!--      <?php else: ?>-->
+      <!--      <a href="index.php?controller=users&amp;action=login"><p><?= i18n("Login") ?></p></a>-->
+      <!--      <?php endif ?>-->
+      <!--    </div>-->
+  {{else}}
+    <a href='#login'>{{i18n 'Login'}}</a>
+  {{/if}}
+</div>

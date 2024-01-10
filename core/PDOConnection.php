@@ -5,7 +5,7 @@ class PDOConnection {
 	private static $dbhost = "127.0.0.1";
 	private static $dbname = "iamon";
 	private static $dbuser = "admin";
-	private static $dbpass = "ITz0Zb9Har53";
+	private static $dbpass = "S2eTgnTwCARg";
 	private static $db_singleton = null;
 
 	public static function getInstance() {

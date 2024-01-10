@@ -6,8 +6,10 @@ require_once(__DIR__."/BaseRest.php");
 
 require_once '../vendor/autoload.php';
 
+use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Firebase\JWT\SignatureInvalidException;
 
 /**
 * Class UserRest
@@ -75,14 +77,6 @@ class UserRest extends BaseRest {
 			parent::error500();
 		}
 	}
-	
-	private function generateBearerToken() {
-		// Genera un token aleatorio
-		$token = bin2hex(openssl_random_pseudo_bytes(16));
-	
-		return $token;
-	}
-
 
 	public function register($data) {
 		
@@ -184,18 +178,36 @@ class UserRest extends BaseRest {
 
     public function checkIfNotExpired($data){
         try {
-            $currentUser = parent::authenticateUser();
+            $token = $data->jwt_token;
 
-            $toRet = array();
+            $decoded_array = (array) JWT::decode($token, new Key(BaseRest::$jwt_key, 'HS256'));
+
+            $userMapper = new UserMapper();
+
+            if (!empty($decoded_array["aud"]) && $userMapper->usernameExists($decoded_array["aud"])) {
+
+                if($decoded_array["aud"] != $data->user_name){
+                    parent::error403("Token user_name mismatch");
+                }
+
+                $toRet = array();
                 $toRet[] = [
-                    "user_name" => $currentUser
+                    "user_name" => $decoded_array["aud"]
                 ];
+                parent::answerJson200($toRet);
 
-            parent::answerJson200($toRet);
+            }else{
+                $this->error401('Invalid token');
+            }
 
-        } catch (Exception $e) {
-            // If database fails or there is an unforeseen error
-            parent::error500();
+        }catch (ExpiredException $exception){
+            $this->error401($exception->getMessage());
+        }catch (SignatureInvalidException $exception) {
+            $this->error400($exception->getMessage());
+        }catch (UnexpectedValueException $exception){
+            $this->error400($exception->getMessage());
+        }catch (Exception $exception){
+            $this->error500();
         }
     }
 	
