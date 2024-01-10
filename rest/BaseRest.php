@@ -68,7 +68,9 @@ class BaseRest {
             }
         }catch (ExpiredException $exception){
             $this->error401($exception->getMessage());
-        }catch (Exception){
+        }catch (\Firebase\JWT\SignatureInvalidException $exception){
+            $this->error400($exception->getMessage());
+        }catch (Exception $exception){
             $this->error500();
         }
 	}

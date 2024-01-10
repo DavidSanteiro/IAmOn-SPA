@@ -96,7 +96,7 @@ class UserRest extends BaseRest {
 				parent::error409("El nombre de usuario ya existe.");
 			}else {
 				// Si no existen, inserta el nuevo usuario en la base de datos
-				$user = new User($data->user_name, $data->user_email, $data->user_password);
+				$user = new User($data->user_name, $data->user_password, $data->user_email);
 				$this->userMapper->save($user);
 	
 				// Devuelve una respuesta HTTP 201

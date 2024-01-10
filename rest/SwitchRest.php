@@ -346,11 +346,15 @@ class SwitchRest extends BaseRest {
 		try {
 			$arrayUserSubscribedSwitches = array();
 			foreach ($switches as $switch){
+
+			    $lastPowerOn = $switch->getLastPowerOn();
+                $switchLastPowerOn = ($lastPowerOn !== null) ? $lastPowerOn->format(SwitchMapper::DATE_FORMAT) : null;
+
 				$arrayUserSubscribedSwitches[] = [
 					"switch_public_uuid" => $switch->getPublicUuid(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
-					"switch_last_power_on" => $switch->getLastPowerOn()->format(SwitchMapper::DATE_FORMAT),
+					"switch_last_power_on" => $switchLastPowerOn,
 					"switch_power_off" => $switch->getPowerOff()
 				];
 			}
