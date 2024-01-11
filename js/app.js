@@ -29,9 +29,10 @@ Promise.all([
     // Layouts
     loadTextFile('templates/layouts/logged_out.hbs').then((source) =>
       Handlebars.templates.loggedOut = Handlebars.compile(source)),
-  loadTextFile('templates/layouts/logged_in.hbs').then((source) =>
-    Handlebars.templates.loggedIn = Handlebars.compile(source)),
 
+    // Component supporting layout:
+    loadTextFile('templates/components/headers.hbs').then((source) =>
+    Handlebars.templates.headers = Handlebars.compile(source)),
 
     loadTextFile('templates/components/language.hbs').then((source) =>
       Handlebars.templates.language = Handlebars.compile(source)),

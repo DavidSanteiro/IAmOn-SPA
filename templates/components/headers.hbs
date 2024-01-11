@@ -1,0 +1,54 @@
+<div>
+  {{#if isLogged}}
+
+    <header>
+      <a href="#dashboard"><img src="img/logo.png" class="logo_iamon" alt="Logo IAmOn"></a>
+      <a href="#dashboard">Dashboard</a>
+      <!--   TODO : El div con id=languajecontrol no se muy como acabó aquí -> revisar -->
+      <div id="languagecontrol">Loading...</div>
+      <div class="user_info">
+
+<!--        TODO: Esta interfaz no aparece en determinadas páginas pero no depende de si está loggeado o no-->
+        {{#if isLogged}}
+
+        <img src="img/user.png" alt="Usuario">
+        <p id="user_name">{{i18n "Hello %s"}} {{currentUser}} </p>
+<!--        TODO: Activar el logout-->
+        <p><a href="index.php?controller=users&amp;action=logout">(Logout)</a></p>
+
+        {{else}}
+
+        <a href="#login"><p><?= i18n("Login") ?></p></a>
+
+        {{/if}}
+      </div>
+    </header>
+
+    <nav>
+      <a href="#dashboard"><img src="img/logo.png" class="logo_iamon" alt="Logo IAmOn"></a>
+      <a href="#dashboard">Dashboard</a>
+      <!--   TODO : El div con id=languajecontrol no se muy como acabó aquí -> revisar -->
+      <div id="languagecontrol">Loading...</div>
+      <div class="user_info">
+
+<!--        TODO: Esta interfaz no aparece en determinadas páginas pero no depende de si está loggeado o no-->
+        {{#if isLogged}}
+
+        <img src="img/user.png" alt="Usuario">
+        <p id="user_name"><?= sprintf(i18n("Hello %s"), $currentuser) ?></p>
+        <!--        TODO: Activar el logout-->
+        <p><a href="index.php?controller=users&amp;action=logout">(Logout)</a></p>
+
+        {{else}}
+
+        <a href="index.php?controller=users&amp;action=login"><p><?= i18n("Login") ?></p></a>
+
+        {{/if}}
+      </div>
+    </nav>
+
+  {{else}}
+    <img src="/img/logo.png" alt="Logo IAmOn" class="logo" height="50">
+    <a href='#login'>{{i18n 'Login'}}</a>
+  {{/if}}
+</div>
