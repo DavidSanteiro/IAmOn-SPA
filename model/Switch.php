@@ -220,9 +220,9 @@ class MySwitch {
 	public function checkIsValidForCreate() {
 		$errors = array();
 		// Public uuid (se genera en la base de datos)
-		if (isset($this->public_uuid)) {
-			$errors["switch_public_uuid"] = "unable to create switch that has been already created (it has assigned an public uuid)";
-		}
+//		if (isset($this->public_uuid)) { //se genera en la base de datos pero en una consulta previa -> no funciona lastInsertedId()
+//			$errors["switch_public_uuid"] = "unable to create switch that has been already created (it has assigned an public uuid)";
+//		}
 		// Private uuid (se genera en la base de datos)
 		if (isset($this->private_uuid)) {
 			$errors["switch_private_uuid"] = "unable to create switch that has been already created (it has assigned an private uuid)";

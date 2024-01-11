@@ -11,7 +11,7 @@ I18n.translations = {
   "My Switches": "Mis Switch",
   "Subscribed Switches": "Switch suscritos",
   "Another idea to a switch?": "¿Otra idea para un switch?",
-  "Crete a switch": "Crea un switch",
+  "Create a switch": "Crea un switch",
   "Have you changed your mind?": "¿Has cambiado de idea?",
   "Edit your switch": "Edita tu switch",
   "Reset private URL": "Restablecer URI privada",

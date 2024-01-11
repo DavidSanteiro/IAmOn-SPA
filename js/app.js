@@ -47,9 +47,12 @@ Promise.all([
     // Swtiches templates
     loadTextFile('templates/components/dashboard.hbs').then((source) =>
     Handlebars.templates.dashboard = Handlebars.compile(source)),
+  loadTextFile('templates/components/switch-add.hbs').then((source) =>
+    Handlebars.templates.switchadd = Handlebars.compile(source)),
 
-    loadTextFile('templates/components/post-edit.hbs').then((source) =>
-      Handlebars.templates.postedit = Handlebars.compile(source)),
+    loadTextFile('templates/components/switch-edit.hbs').then((source) =>
+      Handlebars.templates.switchedit = Handlebars.compile(source)),
+
     loadTextFile('templates/components/post-view.hbs').then((source) =>
       Handlebars.templates.postview = Handlebars.compile(source)),
     loadTextFile('templates/components/post-row.hbs').then((source) =>

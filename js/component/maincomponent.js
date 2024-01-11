@@ -11,7 +11,7 @@ class MainComponent extends Fronty.RouterComponent {
     super.setRouterConfig({
       dashboard: {
         component: new DashboardComponent(this.switchesModel, this.userModel, this),
-        title: 'Posts'
+        title: 'Dashboard'
       },
       'view-post': {
         component: new PostViewComponent(this.switchesModel, this.userModel, this),
@@ -21,8 +21,8 @@ class MainComponent extends Fronty.RouterComponent {
         component: new PostEditComponent(this.switchesModel, this.userModel, this),
         title: 'Edit Post'
       },
-      'add-post': {
-        component: new PostAddComponent(this.switchesModel, this.userModel, this),
+      'add-switch': {
+        component: new SwitchAddComponent(this.switchesModel, this.userModel, this),
         title: 'Add Post'
       },
       login: {

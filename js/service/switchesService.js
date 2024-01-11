@@ -11,6 +11,14 @@ class SwitchesService {
     return $.get(AppConfig.backendServer+'/rest/switch/subscription/' + user_name);
   }
 
+  addSwitch(newSwitch) {
+    return $.ajax({
+      url: AppConfig.backendServer+'/rest/switch/new',
+      method: 'POST',
+      data: JSON.stringify(newSwitch),
+      contentType: 'application/json'
+    });
+  }
 
 //TODO ajustar los siguientes métodos de Post a Switch
   findSwitch(uuid) {
@@ -28,15 +36,6 @@ class SwitchesService {
     return $.ajax({
       url: AppConfig.backendServer+'/rest/post/' + post.id,
       method: 'PUT',
-      data: JSON.stringify(post),
-      contentType: 'application/json'
-    });
-  }
-
-  addSwitch(post) {
-    return $.ajax({
-      url: AppConfig.backendServer+'/rest/post',
-      method: 'POST',
       data: JSON.stringify(post),
       contentType: 'application/json'
     });

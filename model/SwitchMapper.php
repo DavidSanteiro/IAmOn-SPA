@@ -192,14 +192,16 @@ class SwitchMapper {
 		$stmt->execute(array($public_uuid));
 		$switch = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		$power_off = DateTime::createFromFormat(self::DATE_FORMAT, $switch["power_off"], new DateTimeZone('UTC'));
-		if(isset($switch["last_power_on"])){
-			$last_power_on = DateTime::createFromFormat(self::DATE_FORMAT, $switch["last_power_on"], new DateTimeZone('UTC'));
-			$last_power_on = $last_power_on->setTimezone(new DateTimeZone('Europe/Madrid'));
-		} else{
-			$last_power_on = null;
-		}
 		if($switch != null) {
+
+            $power_off = DateTime::createFromFormat(self::DATE_FORMAT, $switch["power_off"], new DateTimeZone('UTC'));
+            if(isset($switch["last_power_on"])){
+                $last_power_on = DateTime::createFromFormat(self::DATE_FORMAT, $switch["last_power_on"], new DateTimeZone('UTC'));
+                $last_power_on = $last_power_on->setTimezone(new DateTimeZone('Europe/Madrid'));
+            } else{
+                $last_power_on = null;
+            }
+
 			return new MySwitch(
 				$switch["switch_name"],
 				new User($switch["user_name"]),
@@ -258,16 +260,13 @@ class SwitchMapper {
 	* @throws PDOException if a database error occurs
 	* @throws Exception if can't insert switch in database
 	*/
-	public function save(MySwitch $switch) {
-		$stmt = $this->db->prepare("INSERT INTO Switch(user_name, switch_name, description) values (?,?,?)");
-		$stmt->execute(array($switch->getOwner()->getUsername(), $switch->getSwitchName(), $switch->getDescription()));
-
+	public function save(MySwitch $switch) : void {
+		$stmt = $this->db->prepare("INSERT INTO Switch(public_uuid, user_name, switch_name, description) values (?,?,?,?)");
+		$stmt->execute(array($switch->getPublicUuid(), $switch->getOwner()->getUsername(), $switch->getSwitchName(), $switch->getDescription()));
 		if($stmt->rowCount() != 1){
 			throw new Exception("The switch " . $switch->getPublicUuid()
 				. " has not been inserted in the database (rowCount = " . $stmt->rowCount() . ")");
 		}
-
-		return $this->db->lastInsertId();
 	}
 
 	/**

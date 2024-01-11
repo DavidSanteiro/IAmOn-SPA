@@ -175,7 +175,8 @@ class SwitchRest extends BaseRest {
 		$switch_description = $data->switch_description;
 
 		// The user of the Switch is the currentUser (user in session)
-		$switch = new MySwitch($switch_name, $currentUser, NULL, NULL,
+        $public_uuid = $this->switchMapper->generateUUID();
+        $switch = new MySwitch($switch_name, $currentUser, $public_uuid, NULL,
 										$switch_description, NULL, NULL);
 
 		try {
@@ -183,17 +184,16 @@ class SwitchRest extends BaseRest {
 			$switch->checkIsValidForCreate(); // if it fails, ValidationException
 
 			// Save the switch object into the database
-			$switch_public_uuid = $this->switchMapper->save($switch);
-
+			$this->switchMapper->save($switch);
 			// Bring all switch attributes from database
-			$switch = $this->switchMapper->findByPublicUUID($switch_public_uuid);
+			$switch = $this->switchMapper->findByPublicUUID($public_uuid);
 
 			parent::answerJson200(array(
 					"switch_public_uuid" => $switch->getPublicUuid(),
 					"switch_private_uuid" => $switch->getPrivateUuid(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
-					"switch_last_power_on" => $switch->getLastPowerOn()->format(SwitchMapper::DATE_FORMAT),
+					"switch_last_power_on" => $switch->getLastPowerOn()?->format(SwitchMapper::DATE_FORMAT),
 					"switch_power_off" => $switch->getPowerOff())
 			);
 
@@ -202,7 +202,8 @@ class SwitchRest extends BaseRest {
 			parent::error400($ex->getErrors());
 		} catch (Exception $e) {
 			// If database fails or there is an unforeseen error
-			parent::error500();
+            echo $e->getMessage();
+			parent::error500($e);
 		}
 	}
 

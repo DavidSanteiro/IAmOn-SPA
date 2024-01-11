@@ -1,6 +1,6 @@
 class SwitchModel extends Fronty.Model {
 
-  constructor(public_uuid, private_uuid, owner_name, switch_name, description, last_power_on, power_off) {
+  constructor(public_uuid, private_uuid, owner_name, switch_name, switch_description, last_power_on, power_off) {
     super('SwitchModel'); //call super
 
     if (public_uuid) {
@@ -27,8 +27,8 @@ class SwitchModel extends Fronty.Model {
       this.power_off = power_off;
     }
 
-    if (description) {
-      this.description = description;
+    if (switch_description) {
+      this.description = switch_description;
     }
   }
 
