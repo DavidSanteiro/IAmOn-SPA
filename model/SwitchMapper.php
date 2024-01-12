@@ -282,7 +282,7 @@ class SwitchMapper {
 				power_off=?, last_power_on=? WHERE public_uuid=?");
 		$stmt->execute(array($switch->getOwner()->getUsername(), $switch->getSwitchName(), $switch->getDescription(),
 			$switch->getPrivateUuid(), $switch->getPowerOff()->setTimezone(new DateTimeZone('UTC'))->format(self::DATE_FORMAT),
-			$switch->getLastPowerOn()->setTimezone(new DateTimeZone('UTC'))->format(self::DATE_FORMAT), $switch->getPublicUuid()));
+			$switch->getLastPowerOn()?->setTimezone(new DateTimeZone('UTC'))->format(self::DATE_FORMAT), $switch->getPublicUuid()));
 
 		return ($stmt->rowCount() == 1);
 	}
@@ -304,7 +304,7 @@ class SwitchMapper {
 	* @throws PDOException if a database error occurs
 	* @throws Exception if can't update switch in database
 	*/
-	public function delete(MySwitch $switch) {
+	public function delete(MySwitch $switch) : void {
 		$stmt = $this->db->prepare("DELETE FROM Switch WHERE public_uuid=?");
 		$stmt->execute(array($switch->getPublicUuid()));
 

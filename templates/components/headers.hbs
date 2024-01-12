@@ -14,11 +14,11 @@
         <img src="img/user.png" alt="Usuario">
         <p id="user_name">{{i18n "Hello %s"}} {{currentUser}} </p>
 <!--        TODO: Activar el logout-->
-        <p><a href="index.php?controller=users&amp;action=logout">(Logout)</a></p>
+        <p><a id="logout_header">(Logout)</a></p>
 
         {{else}}
 
-        <a href="#login"><p><?= i18n("Login") ?></p></a>
+        <a href="#login"><p>{{i18n "Login"}}</p></a>
 
         {{/if}}
       </div>
@@ -41,7 +41,7 @@
 
         {{else}}
 
-        <a href="index.php?controller=users&amp;action=login"><p><?= i18n("Login") ?></p></a>
+        <a id="logout_nav"><p><?= i18n("Login") ?></p></a>
 
         {{/if}}
       </div>
@@ -51,4 +51,15 @@
     <img src="/img/logo.png" alt="Logo IAmOn" class="logo" height="50">
     <a href='#login'>{{i18n 'Login'}}</a>
   {{/if}}
+
+
+  <!--<div>-->
+  <!--  {{#if isLogged}}-->
+  <!--    {{i18n 'Hello'}} {{currentUser}}-->
+  <!--    <input type="button" id='logoutbutton' value="{{i18n 'logout'}}"></input>-->
+  <!--  {{else}}-->
+  <!--    <a href='#login'>{{i18n 'Login'}}</a>-->
+  <!--  {{/if}}-->
+  <!--</div>-->
 </div>
+

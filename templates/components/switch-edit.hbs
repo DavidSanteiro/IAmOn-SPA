@@ -1,9 +1,26 @@
-<div>
-  {{i18n 'Title'}}:<input type="text" id="title" value="{{selectedPost.title}}">
-  {{#i18n}}{{errors.title}}{{/i18n}}<br> {{i18n 'Content'}}:
-  <br>
-  <textarea id="content" rows="20" cols="80">{{selectedPost.content}}</textarea>
-  {{#i18n}}{{errors.content}}{{/i18n}}
-  <br>
-  <input type="button" id="savebutton" value="{{i18n 'Save'}}"></input>
-</div>
+{{#i18n}}{{errors.title}}{{/i18n}}
+{{#i18n}}{{errors.content}}{{/i18n}}
+<main class="form-container">
+  <h2>{{i18n "Have you changed your mind?"}}</h2>
+  <h1>{{i18n "Edit your switch"}}</h1>
+
+  <form>
+    <input type="hidden" name="public_uuid" value="<?php echo($switch->getPublicUuid()) ?>">
+
+    <label class="form-label" for="switch_name">{{i18n "Switch name"}}</label>
+    <input class="form-input" type="text" placeholder="{{i18n "Switch name"}}" id="switch_name" name="switch_name"
+    value="{{selectedSwitch.switch_name}}" required>
+
+    <label class="form-label checkbox_label" for="reset_url">{{i18n "Reset private URL"}}
+      <input type="checkbox" class="form-input" id="reset_url" name="reset_private_uuid">
+      <div class="form-warning"><p>{{i18n "This will cause all old private links on this switch to stop working"}}</p></div>
+    </label>
+
+    <label class="form-label" for="switch_description">{{i18n "Description"}}</label>
+    <textarea class="form-input" id="switch_description" name="switch_description" rows="5" maxlength="1000">{{selectedSwitch.switch_description}}</textarea>
+
+    <button class="form-submit" id="modify" name="modify">{{i18n "Save"}}</button>
+    <button class="form-cancel" id="cancel" name="cancel">{{i18n "Cancel"}}</button>
+    <button class="form-delete" id="delete" name="delete">{{i18n "Delete switch"}}</button>
+  </form>
+</main>

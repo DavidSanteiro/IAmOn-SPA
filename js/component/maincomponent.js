@@ -17,8 +17,8 @@ class MainComponent extends Fronty.RouterComponent {
         component: new PostViewComponent(this.switchesModel, this.userModel, this),
         title: 'Post'
       },
-      'edit-post': {
-        component: new PostEditComponent(this.switchesModel, this.userModel, this),
+      'edit-switch': {
+        component: new SwitchEditComponent(this.switchesModel, this.userModel, this),
         title: 'Edit Post'
       },
       'add-switch': {
@@ -74,14 +74,21 @@ class MainComponent extends Fronty.RouterComponent {
   // }
 
   _createHeadersComponent() {
-    var navComponent = new Fronty.ModelComponent(Handlebars.templates.headers, this.userModel, 'headers');
+    var headersComponent = new Fronty.ModelComponent(Handlebars.templates.headers, this.userModel, 'headers');
 
-    navComponent.addEventListener('click', '#logoutbutton', () => {
+    headersComponent.addEventListener('click', '#logout_header', () => {
       this.userModel.logout();
       this.userService.logout();
+      super.goToPage('login');
     });
 
-    return navComponent;
+    headersComponent.addEventListener('click', '#logout_nav', () => {
+      this.userModel.logout();
+      this.userService.logout();
+      super.goToPage('login');
+    });
+
+    return headersComponent;
   }
 
   _createLanguageComponent() {

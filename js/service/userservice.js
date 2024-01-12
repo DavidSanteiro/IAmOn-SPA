@@ -47,9 +47,14 @@ class UserService {
       const userName = window.sessionStorage.getItem('user_name');
       const jwtToken = window.sessionStorage.getItem('jwt_token');
 
-      if (userName != null && jwtToken != null) {
+      if (userName != null && userName !== "undefined"
+        && jwtToken != null && jwtToken !== "undefined") {
         this.checkIfIsValidToken({user_name: userName, jwt_token: jwtToken})
-          .then(() => resolve({logged: userName})) // Devuelve un objeto con el valor userName
+          .then(() => {
+            window.sessionStorage.setItem('user_name', userName);
+            window.sessionStorage.setItem('jwt_token', jwtToken);
+            resolve(userName)
+          }) // Devuelve un objeto con el valor userName
           .catch(reject);
       } else {
         resolve(null);

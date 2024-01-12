@@ -15,6 +15,12 @@ class DashboardComponent extends Fronty.ModelComponent {
       this.router.goToPage(["add-switch"]);
     });
 
+    this.addEventListener('click', '.switch_button2', (event) => {
+      var public_uuid = event.target.getAttribute("data-public-uuid");
+      this.router.goToPage(["edit-switch?public_uuid="+public_uuid]);
+    });
+
+
   }
 
   onStart() {
@@ -29,7 +35,8 @@ class DashboardComponent extends Fronty.ModelComponent {
       this.switchesModel.setSwitches(
         // create a Fronty.Model for each item retrieved from the backend
         data.map(
-          (item) => new SwitchModel(item.switch_public_uuid,
+          (item) => new SwitchModel(
+            item.switch_public_uuid,
             item.switch_private_uuid,
             "TODO owner",
             item.switch_name,

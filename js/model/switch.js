@@ -28,7 +28,7 @@ class SwitchModel extends Fronty.Model {
     }
 
     if (switch_description) {
-      this.description = switch_description;
+      this.switch_description = switch_description;
     }
   }
 

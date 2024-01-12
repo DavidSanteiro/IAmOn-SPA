@@ -234,7 +234,6 @@ class SwitchRest extends BaseRest {
 		$switch->setSwitchName($switch_name);
 		$switch->setDescription($switch_description);
 		if($reset_switch_private_uuid) $switch->setPrivateUuid($this->switchMapper->generateUUID());
-
 		try {
 			// Validate switch object
 			$switch->checkIsValidForUpdate(); // if it fails, ValidationException
@@ -249,7 +248,7 @@ class SwitchRest extends BaseRest {
 					"switch_private_uuid" => $switch->getPrivateUuid(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
-					"switch_last_power_on" => $switch->getLastPowerOn()->format(SwitchMapper::DATE_FORMAT),
+					"switch_last_power_on" => $switch->getLastPowerOn()?->format(SwitchMapper::DATE_FORMAT),
 					"switch_power_off" => $switch->getPowerOff())
 			);
 
@@ -286,9 +285,7 @@ class SwitchRest extends BaseRest {
 		try {
 
 			// Delete the switch object from the database
-			if($this->switchMapper->delete($switch) != 1){
-				parent::error500();
-			}
+			$this->switchMapper->delete($switch);
 
 			parent::answerString204("Switch with public UUID ".$switch_public_uuid." successfully deleted");
 
@@ -369,7 +366,6 @@ class SwitchRest extends BaseRest {
 	}
 
 	public function getPublic($switch_public_uuid){
-
 		if (!preg_match(SwitchMapper::REGEX_UUID, $switch_public_uuid)) {
 			parent::error400(array("switch_public_uuid" => "La variable no es un UUID."));
 		}
@@ -386,7 +382,7 @@ class SwitchRest extends BaseRest {
 					"switch_public_uuid" => $switch->getPublicUuid(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
-					"switch_last_power_on" => $switch->getLastPowerOn()->format(SwitchMapper::DATE_FORMAT),
+					"switch_last_power_on" => $switch->getLastPowerOn()?->format(SwitchMapper::DATE_FORMAT),
 					"switch_power_off" => $switch->getPowerOff())
 			);
 
@@ -415,7 +411,7 @@ class SwitchRest extends BaseRest {
 					"switch_private_uuid" => $switch->getPrivateUuid(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
-					"switch_last_power_on" => $switch->getLastPowerOn()->format(SwitchMapper::DATE_FORMAT),
+					"switch_last_power_on" => $switch->getLastPowerOn()?->format(SwitchMapper::DATE_FORMAT),
 					"switch_power_off" => $switch->getPowerOff())
 			);
 

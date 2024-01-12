@@ -20,26 +20,30 @@ class SwitchesService {
     });
   }
 
-//TODO ajustar los siguientes métodos de Post a Switch
-  findSwitch(uuid) {
-    return $.get(AppConfig.backendServer+'/rest/switch/' + uuid);
-  }
-
-  deleteSwitch(id) {
+  saveSwitch(modifiedSwitch) {
     return $.ajax({
-      url: AppConfig.backendServer+'/rest/post/' + id,
-      method: 'DELETE'
-    });
-  }
-
-  saveSwitch(post) {
-    return $.ajax({
-      url: AppConfig.backendServer+'/rest/post/' + post.id,
+      url: AppConfig.backendServer+'/rest/switch',
       method: 'PUT',
-      data: JSON.stringify(post),
+      data: JSON.stringify(modifiedSwitch),
       contentType: 'application/json'
     });
   }
+
+  deleteSwitch(deletedSwitch) {
+    return $.ajax({
+      url: AppConfig.backendServer+'/rest/switch',
+      method: 'DELETE',
+      data: JSON.stringify(deletedSwitch),
+      contentType: 'application/json'
+    });
+  }
+
+  findSwitch(uuid) {
+    return $.get(AppConfig.backendServer+'/rest/switch/public/' + uuid);
+  }
+
+//TODO ajustar los siguientes métodos de Post a Switch
+
 
   // createComment(postid, comment) {
   //   return $.ajax({
