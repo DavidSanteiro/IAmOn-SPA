@@ -11,7 +11,7 @@
     <input class="form-input" type="text" placeholder="{{i18n "Switch name"}}" id="switch_name" name="switch_name"
     value="{{selectedSwitch.switch_name}}" required>
 
-    <label class="form-label checkbox_label" for="reset_url">{{i18n "Reset private URL"}}
+    <label class="form-label checkbox_label" for="reset_url">{{i18n "Reset private URI"}}
       <input type="checkbox" class="form-input" id="reset_url" name="reset_private_uuid">
       <div class="form-warning"><p>{{i18n "This will cause all old private links on this switch to stop working"}}</p></div>
     </label>
@@ -19,8 +19,8 @@
     <label class="form-label" for="switch_description">{{i18n "Description"}}</label>
     <textarea class="form-input" id="switch_description" name="switch_description" rows="5" maxlength="1000">{{selectedSwitch.switch_description}}</textarea>
 
-    <button class="form-submit" id="modify" name="modify">{{i18n "Save"}}</button>
+    <button class="form-submit" id="modify" name="modify">{{i18n "Edit"}}</button>
     <button class="form-cancel" id="cancel" name="cancel">{{i18n "Cancel"}}</button>
-    <button class="form-delete" id="delete" name="delete">{{i18n "Delete switch"}}</button>
+    <button class="form-delete" id="delete" name="delete">{{i18n "Delete"}}</button>
   </form>
 </main>

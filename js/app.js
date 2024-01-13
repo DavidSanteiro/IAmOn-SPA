@@ -54,8 +54,8 @@ Promise.all([
     loadTextFile('templates/components/switch-edit.hbs').then((source) =>
       Handlebars.templates.switchedit = Handlebars.compile(source)),
 
-    loadTextFile('templates/components/post-view.hbs').then((source) =>
-      Handlebars.templates.postview = Handlebars.compile(source)),
+    loadTextFile('templates/components/switch-view.hbs').then((source) =>
+      Handlebars.templates.switchview = Handlebars.compile(source)),
     loadTextFile('templates/components/post-row.hbs').then((source) =>
       Handlebars.templates.postrow = Handlebars.compile(source))
   ])

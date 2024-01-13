@@ -38,6 +38,18 @@ class SwitchAddComponent extends Fronty.ModelComponent {
   }
 
   onStart() {
+
+    // si no hay una sesión activa, reenviamos a login
+    this.userService.loginWithSessionData()
+      .then((logged) => {
+        if (logged != null) {
+          this.userModel.setLoggeduser(logged);
+        }else{
+          this.userModel.logout();
+          this.router.goToPage('login');
+        }
+      });
+
     this.switchesModel.setSelectedSwitch(new SwitchModel());
   }
 }

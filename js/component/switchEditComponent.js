@@ -61,9 +61,20 @@ class SwitchEditComponent extends Fronty.ModelComponent {
   }
 
   onStart() {
+    // si no hay una sesión activa, reenviamos a login
+    this.userService.loginWithSessionData()
+      .then((logged) => {
+        if (logged != null) {
+          this.userModel.setLoggeduser(logged);
+        }else{
+          this.userModel.logout();
+          this.router.goToPage('login');
+        }
+      });
+
     var selectedSwitchUuid = this.router.getRouteQueryParam('public_uuid');
     if (selectedSwitchUuid != null) {
-      this.switchesService.findSwitch(selectedSwitchUuid)
+      this.switchesService.findSwitchPublic(selectedSwitchUuid)
         .then((selectedSwitch) => {
           this.switchesModel.setSelectedSwitch(selectedSwitch);
         });

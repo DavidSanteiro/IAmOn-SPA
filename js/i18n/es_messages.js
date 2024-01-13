@@ -14,7 +14,7 @@ I18n.translations = {
   "Create a switch": "Crea un switch",
   "Have you changed your mind?": "¿Has cambiado de idea?",
   "Edit your switch": "Edita tu switch",
-  "Reset private URL": "Restablecer URI privada",
+  "Reset private URI": "Restablecer URI privada",
   "This will cause all old private links on this switch to stop working": "Esto provocará que dejen de funcionar todos los enlaces privados antiguos de este switch",
 
   "Create": "Crear",
@@ -35,8 +35,7 @@ I18n.translations = {
   "Switch subscription \"%s\" successfully deleted.": "La suscripción al switch \"%s\" se ha eliminado.",
   "Error occurred when deleting a subscription to switch \"%s\"": "Ha ocurrido un error al eliminar la suscripción al switch \"%s\".",
 
-  "There are": "Se han suscrito",
-  "subscribers to this switch": "usuarios a este switch",
+  "There are %s subscribers to this switch": "Se han suscrito %s usuarios a este switch",
 
   "Switch \"%s\" successfully powered \"%s\".": "Switch \"%s\" \"%s\".",
   "Switch \"%s\" successfully added.": "Switch \"%s\" añadido.",

@@ -143,15 +143,15 @@ class SwitchMapper {
 	 * Checks if a user is subscribed to a switch
 	 *
 	 * @param string $user_name The user subscribed to the switches
-	 * @param MySwitch $switch The switch to be subscribed
-	 * @throws PDOException if a database error occurs
+	 * @param MySwitch $public_uuid The switch to be subscribed
 	 * @return bool if $user is subscribed to switch,
+	 *@throws PDOException if a database error occurs
 	 */
-	public function isSubscribed(string $user_name, MySwitch $switch) : bool
+	public function isSubscribed(string $user_name, string $public_uuid) : bool
 	{
 		$stmt = $this->db->prepare("SELECT COUNT(*) FROM Suscriber 
                 WHERE public_uuid=? AND user_name=?;");
-		$stmt->execute(array($switch->getPublicUuid(), $user_name));
+		$stmt->execute(array($public_uuid, $user_name));
 		return ($stmt->fetchColumn() == "1");
 	}
 

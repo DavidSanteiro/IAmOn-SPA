@@ -29,12 +29,12 @@
           </form>
 
           <h3 class="switch_name">{{this.switch_name}}</h3>
-          <!--    TODO -> solucionar printf en i18n. Creo que no se puede utilizar '%s'-->
+
           {{#if hasDateSwitchOn}}
             {{#if isOn}}
-              <p class="switch_time_poweredOn">{{i18n 'Is switched on since %s'}} {{this.last_power_on}}</p>
+              <p class="switch_time_poweredOn">{{i18n 'Is switched on since %s' this.last_power_on}}</p>
             {{else}}
-              <p class="switch_time_poweredOff">{{i18n 'Last lit on %s at %s'}}</p>
+              <p class="switch_time_poweredOff">{{i18n 'Last lit on %s at %s' this.last_power_on}}</p>
             {{/if}}
           {{else}}
             <p class="switch_time_poweredOff"> {{i18n 'It never has been powered on' }}</p>
@@ -42,14 +42,14 @@
           <!--    TODO -> Está a medio hacer. Acoplarlo a JS-->
           <label for="switch_private_share{{index}}" class="switch_boton-label">
             <input type="radio" id="switch_private_share{{index}}" name="seleccion" class="switch_boton-radio">
-            <img src="img/share_with_permission.png" alt="Compartir con permisos" class="switch_button3" height="30" width="30">
+              <img src="img/share_with_permission.png" alt="Compartir con permisos" class="switch_button3" height="30" width="30">
             </input>
             <input type="text" class="texto-input form-input" value="{{private_uuid}}" readonly>
           </label>
 
           <label for="switch_public_share{{index}}" class="switch_boton-label">
             <input type="radio" id="switch_public_share{{index}}" name="seleccion" class="switch_boton-radio">
-            <img src="img/share.png" alt="Compartir" class="switch_button1" height="30" width="30">
+              <img src="img/share.png" alt="Compartir" class="switch_button1" height="30" width="30">
             </input>
             <input type="text" class="texto-input form-input" value="{{public_uuid}}" readonly>
           </label>

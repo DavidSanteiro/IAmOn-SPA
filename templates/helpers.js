@@ -4,3 +4,4 @@ Handlebars.registerHelper('if_eq', function(a, b, opts) {
   else
     return opts.inverse(this);
 });
+

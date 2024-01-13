@@ -12,7 +12,7 @@ class SwitchesModel extends Fronty.Model {
         this.set((self) => {
             self.selectedSwitch = selectedSwitch;
         });
-    }
+  }
 
   setSwitches(switches) {
       this.set((self) => {

@@ -9,6 +9,7 @@ class DashboardComponent extends Fronty.ModelComponent {
     this.router = router;
 
     this.switchesService = new SwitchesService();
+    this.userService = new UserService();
 
     // Si se pulsa el botón "Añadir", se va a la página de nuevo switch
     this.addEventListener('click', '#new_switch', () => {
@@ -21,9 +22,22 @@ class DashboardComponent extends Fronty.ModelComponent {
     });
 
 
+
+
   }
 
   onStart() {
+
+    // si no hay una sesión activa, reenviamos a login
+    this.userService.loginWithSessionData()
+      .then((logged) => {
+        if (logged != null) {
+          this.userModel.setLoggeduser(logged);
+        }else{
+          this.userModel.logout();
+          this.router.goToPage('login');
+        }
+      });
 
     this.updateSwitches();
     this.updateSubscribedSwitches();
@@ -38,7 +52,7 @@ class DashboardComponent extends Fronty.ModelComponent {
           (item) => new SwitchModel(
             item.switch_public_uuid,
             item.switch_private_uuid,
-            "TODO owner",
+            item.owner_name,
             item.switch_name,
             item.switch_description,
             item.switch_last_power_on,
@@ -55,7 +69,7 @@ class DashboardComponent extends Fronty.ModelComponent {
         data.map(
           (item) => new SwitchModel(item.switch_public_uuid,
             item.switch_private_uuid,
-            "TODO owner",
+            item.owner_name,
             item.switch_name,
             item.switch_description,
             item.switch_last_power_on,

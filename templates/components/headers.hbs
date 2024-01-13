@@ -12,7 +12,7 @@
         {{#if isLogged}}
 
         <img src="img/user.png" alt="Usuario">
-        <p id="user_name">{{i18n "Hello %s"}} {{currentUser}} </p>
+        <p id="user_name">{{i18n "Hello %s" currentUser}}</p>
 <!--        TODO: Activar el logout-->
         <p><a id="logout_header">(Logout)</a></p>
 
@@ -35,7 +35,7 @@
         {{#if isLogged}}
 
         <img src="img/user.png" alt="Usuario">
-        <p id="user_name"><?= sprintf(i18n("Hello %s"), $currentuser) ?></p>
+        <p id="user_name">{{i18n "Hello %s" currentUser}}</p>
         <!--        TODO: Activar el logout-->
         <p><a href="index.php?controller=users&amp;action=logout">(Logout)</a></p>
 
@@ -48,8 +48,9 @@
     </nav>
 
   {{else}}
+
     <img src="/img/logo.png" alt="Logo IAmOn" class="logo" height="50">
-    <a href='#login'>{{i18n 'Login'}}</a>
+
   {{/if}}
 
 

@@ -313,11 +313,11 @@ class SwitchRest extends BaseRest {
 				$arrayUserSwitches[] = [
 					"switch_public_uuid" => $switch->getPublicUuid(),
 					"switch_private_uuid" => $switch->getPrivateUuid(),
+                    "owner_name" => $switch->getOwner()->getUsername(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
 					"switch_last_power_on" =>
-                        is_null($switch->getLastPowerOn()) ? null :
-                            $switch->getLastPowerOn()->format(SwitchMapper::DATE_FORMAT),
+                        $switch->getLastPowerOn()?->format(SwitchMapper::DATE_FORMAT),
 					"switch_power_off" => $switch->getPowerOff()
 				];
 			}
@@ -350,6 +350,7 @@ class SwitchRest extends BaseRest {
 
 				$arrayUserSubscribedSwitches[] = [
 					"switch_public_uuid" => $switch->getPublicUuid(),
+                    "owner_name" => $switch->getOwner()->getUsername(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
 					"switch_last_power_on" => $switchLastPowerOn,
@@ -380,6 +381,7 @@ class SwitchRest extends BaseRest {
 
 			parent::answerJson200(array(
 					"switch_public_uuid" => $switch->getPublicUuid(),
+                    "owner_name" => $switch->getOwner()->getUsername(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
 					"switch_last_power_on" => $switch->getLastPowerOn()?->format(SwitchMapper::DATE_FORMAT),
@@ -409,6 +411,7 @@ class SwitchRest extends BaseRest {
 			parent::answerJson200(array(
 					"switch_public_uuid" => $switch->getPublicUuid(),
 					"switch_private_uuid" => $switch->getPrivateUuid(),
+                    "owner_name" => $switch->getOwner()->getUsername(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
 					"switch_last_power_on" => $switch->getLastPowerOn()?->format(SwitchMapper::DATE_FORMAT),

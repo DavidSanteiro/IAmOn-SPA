@@ -40,7 +40,7 @@ class SwitchModel extends Fronty.Model {
 
   setOwner(owner) {
     this.set((self) => {
-      self.owner = owner;
+      self.owner_name = owner;
     });
   }
 
@@ -70,9 +70,14 @@ class SwitchModel extends Fronty.Model {
 
   setDescription(description) {
     this.set((self) => {
-      self.description = description;
+      self.switch_description = description;
     });
   }
 
+  setIsSubscribed(isSubscribed){
+    this.set((self) => {
+      self.is_subscribed = isSubscribed;
+    });
+  }
 
 }

@@ -13,9 +13,9 @@ class MainComponent extends Fronty.RouterComponent {
         component: new DashboardComponent(this.switchesModel, this.userModel, this),
         title: 'Dashboard'
       },
-      'view-post': {
-        component: new PostViewComponent(this.switchesModel, this.userModel, this),
-        title: 'Post'
+      'view-switch': {
+        component: new SwitchViewComponent(this.switchesModel, this.userModel, this),
+        title: 'View Switch'
       },
       'edit-switch': {
         component: new SwitchEditComponent(this.switchesModel, this.userModel, this),
@@ -47,19 +47,7 @@ class MainComponent extends Fronty.RouterComponent {
   }
 
   start() {
-    // override the start() function in order to first check if there is a logged user
-    // in sessionStorage, so we try to do a relogin and start the main component
-    // only when login is checked
-    this.userService.loginWithSessionData()
-      .then((logged) => {
-        if (logged != null) {
-          this.userModel.setLoggeduser(logged);
-        }else{
-          this.userModel.logout();
-          super.goToPage('login');
-        }
-        super.start(); // now we can call start
-      });
+    super.start(); // now we can call start
   }
 
   // _createUserBarComponent() {

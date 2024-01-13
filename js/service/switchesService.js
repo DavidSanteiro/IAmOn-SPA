@@ -38,12 +38,52 @@ class SwitchesService {
     });
   }
 
-  findSwitch(uuid) {
-    return $.get(AppConfig.backendServer+'/rest/switch/public/' + uuid);
+  findSwitchPublic(public_uuid) {
+    return $.get(AppConfig.backendServer+'/rest/switch/public/' + public_uuid);
+  }
+
+  findSwitchPrivate(private_uuid) {
+    return $.get(AppConfig.backendServer+'/rest/switch/private/' + private_uuid);
+  }
+
+  modifySubscriptionSwitch(subscription) {
+    return $.ajax({
+      url: AppConfig.backendServer + '/rest/switch/subscriber',
+      method: 'PUT',
+      data: JSON.stringify(subscription),
+      contentType: 'application/json'
+    });
+  }
+
+  isSubscribedSwitch(public_uuid, user_name) {
+    return $.get(AppConfig.backendServer+'/rest/switch/' + public_uuid +'/subscriber/'+ user_name);
+  }
+
+  getNumSubscribersSwitch(public_uuid) {
+    return $.get(AppConfig.backendServer+'/rest/switch/' + public_uuid +'/numSubscribers');
+  }
+
+  changeSwitchStatePublic(public_uuid, state){
+    //TODO NO VA
+    return $.ajax({
+      url: AppConfig.backendServer + '/rest/switch/',
+      method: 'PUT',
+      data: JSON.stringify(subscription),
+      contentType: 'application/json'
+    });
+  }
+
+  changeSwitchStatePrivate(private_uuid, state){
+    //TODO NO VA
+    return $.ajax({
+      url: AppConfig.backendServer + '/rest/switch/',
+      method: 'PUT',
+      data: JSON.stringify(subscription),
+      contentType: 'application/json'
+    });
   }
 
 //TODO ajustar los siguientes métodos de Post a Switch
-
 
   // createComment(postid, comment) {
   //   return $.ajax({

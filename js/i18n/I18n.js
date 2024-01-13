@@ -1,11 +1,29 @@
-Handlebars.registerHelper('i18n', function(key, opts) {
+// Handlebars.registerHelper('i18n', function(key, opts) {
+//   if (typeof key == "string") {
+//     // inline - mode {{i18n 'key'}}
+//     return new Handlebars.SafeString(I18n.translate(key));
+//   } else {
+//     // block - mode {{#i18n}}contents{{/i18n}}
+//     return new Handlebars.SafeString(I18n.translate(key.fn(this)));
+//   }
+// });
+
+Handlebars.registerHelper('i18n', function(key, value, opts) {
+  let translated;
   if (typeof key == "string") {
     // inline - mode {{i18n 'key'}}
-    return new Handlebars.SafeString(I18n.translate(key));
+    translated = I18n.translate(key);
   } else {
     // block - mode {{#i18n}}contents{{/i18n}} 
-    return new Handlebars.SafeString(I18n.translate(key.fn(this)));
+    translated = I18n.translate(key.fn(this));
   }
+
+  // Si se proporcionó un valor, reemplaza '%s' en la cadena traducida
+  if (value !== undefined) {
+    translated = translated.replace('%s', value);
+  }
+
+  return new Handlebars.SafeString(translated);
 });
 
 // detect current language
