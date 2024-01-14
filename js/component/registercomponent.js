@@ -6,10 +6,11 @@ class RegisterComponent extends Fronty.ModelComponent {
     this.router = router;
 
     this.addEventListener('click', '#id_submitButtonRegister', () => {
+      let user_email = $('#id_userEmailRegister').val();
       this.userService.register({
-        user_name: $('#id_userNameRegister').val(),
-        user_email: $('#id_userEmailRegister').val(),
-        user_password: $('#id_userPasswordRegister').val()
+        user_name: $('#id_userNameRegister').val().trim(),
+        user_email: ((user_email.trim()==='')?null:user_email),
+        user_password: $('#id_userPasswordRegister').val().trim()
       })
         .then(() => {
           alert(I18n.translate('User registered! You can now log in'));

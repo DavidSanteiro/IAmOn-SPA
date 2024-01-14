@@ -63,22 +63,14 @@ class SwitchesService {
     return $.get(AppConfig.backendServer+'/rest/switch/' + public_uuid +'/numSubscribers');
   }
 
-  changeSwitchStatePublic(public_uuid, state){
-    //TODO NO VA
+  changeSwitchStatePublic(public_uuid, minutes_on){
     return $.ajax({
-      url: AppConfig.backendServer + '/rest/switch/',
-      method: 'PUT',
-      data: JSON.stringify(subscription),
-      contentType: 'application/json'
-    });
-  }
-
-  changeSwitchStatePrivate(private_uuid, state){
-    //TODO NO VA
-    return $.ajax({
-      url: AppConfig.backendServer + '/rest/switch/',
-      method: 'PUT',
-      data: JSON.stringify(subscription),
+      url: AppConfig.backendServer + '/rest/switch/public',
+      method: 'POST',
+      data: JSON.stringify({
+        switch_public_uuid: public_uuid,
+        minutes_on: minutes_on
+      }),
       contentType: 'application/json'
     });
   }

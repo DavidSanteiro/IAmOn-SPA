@@ -1,6 +1,6 @@
 class SwitchModel extends Fronty.Model {
 
-  constructor(public_uuid, private_uuid, owner_name, switch_name, switch_description, last_power_on, power_off) {
+  constructor(public_uuid, private_uuid, owner_name, switch_name, switch_description, json_last_power_on, json_power_off) {
     super('SwitchModel'); //call super
 
     if (public_uuid) {
@@ -19,58 +19,42 @@ class SwitchModel extends Fronty.Model {
       this.switch_name = switch_name;
     }
 
-    if (last_power_on) {
-      this.last_power_on = last_power_on;
+    if (json_last_power_on) {
+      this.setLast_power_on(json_last_power_on);
     }
 
-    if (power_off) {
-      this.power_off = power_off;
+    if (json_power_off) {
+      this.setPower_off(json_power_off);
+    }else{
+      this.isOn = false;
     }
 
     if (switch_description) {
       this.switch_description = switch_description;
     }
+
+    this.hasPermissions = undefined;
+    this.is_subscribed = undefined;
+    this.num_subscriptions = undefined;
   }
 
-  setPrivate_uuid(privateUuid) {
+  setHasPermissions(hasPermissions) {
     this.set((self) => {
-      self.privateUuid = privateUuid;
+      self.hasPermissions = hasPermissions;
     });
   }
 
-  setOwner(owner) {
+  setLast_power_on(json_last_power_on) {
     this.set((self) => {
-      self.owner_name = owner;
+      self.last_power_on = this.jsonToDate(json_last_power_on);
     });
   }
 
-  setPublic_uuid(public_uuid) {
+  setPower_off(json_power_off) {
     this.set((self) => {
-      self.public_uuid = public_uuid;
-    });
-  }
-
-  setSwitch_name(switch_name) {
-    this.set((self) => {
-      self.switch_name = switch_name;
-    });
-  }
-
-  setLast_power_on(last_power_on) {
-    this.set((self) => {
-      self.last_power_on = last_power_on;
-    });
-  }
-
-  setPower_off(power_off) {
-    this.set((self) => {
-      self.power_off = power_off;
-    });
-  }
-
-  setDescription(description) {
-    this.set((self) => {
-      self.switch_description = description;
+      self.power_off = this.jsonToDate(json_power_off);
+      // Damos por hecho que el tiempo entre que se crea el objeto y el momento en el que se usa es suficientemente pequeño
+      self.isOn = this.power_off>=new Date();
     });
   }
 
@@ -80,4 +64,14 @@ class SwitchModel extends Fronty.Model {
     });
   }
 
+  setNumSubscribers(num_subscriptions) {
+    this.set((self) => {
+      self.num_subscriptions = num_subscriptions;
+    });
+  }
+
+  jsonToDate(json_date) {
+    // Extraer la fecha del objeto (se supone horario UTC)
+    return new Date(json_date.date);
+  }
 }

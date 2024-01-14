@@ -6,6 +6,7 @@ class SwitchEditComponent extends Fronty.ModelComponent {
     this.addModel('user', userModel);
     this.router = router;
 
+    this.userService = new UserService();
     this.switchesService = new SwitchesService();
 
     // Si se pulsa el botón "Modificar", se envía la petición a back y se vuelve al dashboard
@@ -66,21 +67,23 @@ class SwitchEditComponent extends Fronty.ModelComponent {
       .then((logged) => {
         if (logged != null) {
           this.userModel.setLoggeduser(logged);
+          var selectedSwitchUuid = this.router.getRouteQueryParam('public_uuid');
+
+          // Una vez se ha verificado que se ha iniciado sesión correctamente se cargan los datos del switch
+          if (selectedSwitchUuid != null) {
+            this.switchesService.findSwitchPublic(selectedSwitchUuid)
+              .then((selectedSwitch) => {
+                this.switchesModel.setSelectedSwitch(selectedSwitch);
+              });
+          }else{
+            alert("Error: No se ha seleccionado un switch");
+            this.router.goToPage('dashboard');
+          }
         }else{
           this.userModel.logout();
           this.router.goToPage('login');
         }
       });
 
-    var selectedSwitchUuid = this.router.getRouteQueryParam('public_uuid');
-    if (selectedSwitchUuid != null) {
-      this.switchesService.findSwitchPublic(selectedSwitchUuid)
-        .then((selectedSwitch) => {
-          this.switchesModel.setSelectedSwitch(selectedSwitch);
-        });
-    }else{
-      alert("Error: No se ha seleccionado un switch");
-      this.router.goToPage('dashboard');
-    }
   }
 }

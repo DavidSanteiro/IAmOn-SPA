@@ -28,24 +28,6 @@ class UserRest extends BaseRest {
 		$this->userMapper = new UserMapper();
 	}
 
-	public function postUser($data) {
-		$user = new User($data->username, $data->password);
-		try {
-			$user->checkIsValidForRegister();
-
-			$this->userMapper->save($user);
-
-			header($_SERVER['SERVER_PROTOCOL'].' 201 Created');
-			header("Location: ".$_SERVER['REQUEST_URI']."/".$data->username);
-		}catch(ValidationException $e) {
-			http_response_code(400);
-			header('Content-Type: application/json');
-			echo(json_encode($e->getErrors()));
-		}
-	}
-
-	
-
 	public function login($data) {
 		// Comprueba si el usuario existe
 	
@@ -82,23 +64,25 @@ class UserRest extends BaseRest {
 		
 		try {
 			// Comprueba si el nombre de usuario o el correo electrónico ya existen
-			if ($this->userMapper->userEmailExists($data->user_email)) {
+			if (is_null($data->user_email) && $this->userMapper->userEmailExists($data->user_email)) {
 				// Si existen, devuelve una respuesta HTTP 409
 				parent::error409("El correo electrónico ya existe.");
-			} else if ($this->userMapper->usernameExists($data->user_name)) {
+			}
+            if ($this->userMapper->usernameExists($data->user_name)) {
 				// Si existen, devuelve una respuesta HTTP 409
 				parent::error409("El nombre de usuario ya existe.");
-			}else {
-				// Si no existen, inserta el nuevo usuario en la base de datos
-				$user = new User($data->user_name, $data->user_password, $data->user_email);
-				$this->userMapper->save($user);
-	
-				// Devuelve una respuesta HTTP 201
-				parent::answerJson201(array("user_name" => $data->user_name, "user_email" => $data->user_email));
 			}
+
+            // Si no existen, inserta el nuevo usuario en la base de datos
+            $user = new User($data->user_name, $data->user_password, $data->user_email);
+            $this->userMapper->save($user);
+
+            // Devuelve una respuesta HTTP 201
+            parent::answerJson201(array("user_name" => $data->user_name, "user_email" => $data->user_email));
+
 		} catch (Exception $e) {
 			// Si la base de datos falla o hay un error imprevisto
-			parent::error500();
+			parent::error500($e);
 		}
 	}
 

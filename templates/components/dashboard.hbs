@@ -17,13 +17,13 @@
 
             <!--      TODO -> Se cambia el sistema respecto al MVC. En lugar de ser un  botón, aquí debería de ser funcional el switch -->
             <label class='switch'>
-              <input type='checkbox' name='switch_state_{{this.public_uuid}}' {{#if isOn}} checked {{/if}} >
+              <input type='checkbox' class='changeSwitchState' data-public-uuid='{{this.public_uuid}}' name='switch_state_{{this.public_uuid}}' {{#if isOn}} checked {{/if}} >
               <span class='slider round'></span>
             </label>
 
             {{#unless isOn}}
               <label class="form-label switch_time_label">{{i18n 'Time' }}</label>
-              <input type="number" class="form-input switch_time" name="time_on" value="60">
+              <input type="number" id='time_on{{this.public_uuid}}' class="form-input switch_time" name="time_on" value="60">
             {{/unless}}
 
           </form>
@@ -39,25 +39,25 @@
           {{else}}
             <p class="switch_time_poweredOff"> {{i18n 'It never has been powered on' }}</p>
           {{/if}}
-          <!--    TODO -> Está a medio hacer. Acoplarlo a JS-->
+
           <label for="switch_private_share{{index}}" class="switch_boton-label">
             <input type="radio" id="switch_private_share{{index}}" name="seleccion" class="switch_boton-radio">
               <img src="img/share_with_permission.png" alt="Compartir con permisos" class="switch_button3" height="30" width="30">
             </input>
-            <input type="text" class="texto-input form-input" value="{{private_uuid}}" readonly>
+            <input type="text" class="texto-input form-input" value="http://localhost/#view-switch?private_uuid={{private_uuid}}" readonly>
           </label>
 
           <label for="switch_public_share{{index}}" class="switch_boton-label">
             <input type="radio" id="switch_public_share{{index}}" name="seleccion" class="switch_boton-radio">
               <img src="img/share.png" alt="Compartir" class="switch_button1" height="30" width="30">
             </input>
-            <input type="text" class="texto-input form-input" value="{{public_uuid}}" readonly>
+            <input type="text" class="texto-input form-input" value="http://localhost/#view-switch?public_uuid={{public_uuid}}" readonly>
           </label>
 
 
           <p class="switch_owner">{{this.owner_name}}</p>
 
-          <img src="img/edit.png" alt="Editar" class="switch_button2" height="30" width="30" data-public-uuid="{{this.public_uuid}}">
+          <img src="img/edit.png" alt="Editar" class="switch_button2 edit" height="30" width="30" data-public-uuid="{{this.public_uuid}}">
         </div>
 
       {{/each}}
@@ -86,8 +86,6 @@
             {{#if hasDateSwitchOn}}
               {{#if isOn}}
                 {{i18n 'Is switched on since %s'}} {{this.last_power_on}}
-                <!--    TODO -> solucionar printf en i18n. Creo que no se puede utilizar '%s'-->
-                <!--                    echo(sprintf(i18n("Is switched on since %s"),$switch->getLastPowerOn()->format($hourFormat)));-->
               {{else}}
                 {{i18n 'Last lit on %s at %s'}} {{this.last_power_on}}
                 <!--    TODO -> solucionar printf en i18n. Creo que no se puede utilizar '%s'-->
@@ -99,26 +97,27 @@
             {{/if}}
           </p>
 
-
-          <!--    TODO -> Está a medio hacer. Acoplarlo a JS-->
           <label for="switch_public_share{{index}}+{{mySwitches.length}}" class="switch_boton-label">
             <input type="radio" id="switch_public_share{{index}}+{{mySwitches.length}}" name="seleccion" class="switch_boton-radio">
             <img src="img/share.png" alt="Compartir" class="switch_button1" height="30" width="30">
             </input>
-            <input type="text" class="texto-input form-input" value="{{public_uuid}}" readonly>
+            <input type="text" class="texto-input form-input" value="http://localhost/#view-switch?public_uuid={{public_uuid}}" readonly>
           </label>
 
           <p class="switch_owner">{{this.owner_name}}</p>
+
+
+          <img src="img/info.png" alt="Info" class="switch_button2 view" height="30" width="30" data-public-uuid="{{this.public_uuid}}">
+
+
           <!--    TODO -> Está a medio hacer. Acoplarlo a JS-->
-          <a href="http://localhost/index.php?controller=switches&amp;action=view&amp;public_uuid=<?php echo $switch->getPublicUuid()?>">
-            <img src="img/info.png" alt="Editar" class="switch_button2" height="30" width="30">
-          </a>
-          <!--    TODO -> Está a medio hacer. Acoplarlo a JS-->
-          <form action="index.php?controller=switches&amp;action=unsubscribe" method="post">
-            <input type="hidden" value="<?php echo($switch->getPublicUuid()) ?>" name="public_uuid">
-            <input type="hidden" value="<?php echo($currentuser) ?>" name="user_name">
-            <input type="image" src="img/alarm-bell_silenced.png" class="switch_button3" alt="Enviar" name="submit">
+          <form>
+
+            <input type="image" id="changeSubscriptionStateImgDashboard" src="img/alarm-bell_silenced.png"
+                   class="switch_button3" alt="Enviar" name="submit" data-public-uuid="{{this.public_uuid}}">
           </form>
+
+
         </div>
 
       {{/each}}
