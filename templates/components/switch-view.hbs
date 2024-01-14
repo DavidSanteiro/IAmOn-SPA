@@ -1,59 +1,62 @@
 <div>
-
   <main id="div_view" class="form-container">
     {{#unless selectedSwitch}}
       <img src="img/empty.png" class="empty_img" alt="Fondo vacío">
       <h2>{{i18n "¡Oh, no! The switch with UUID %s has not been found" selectedSwitch.public_uuid }}</h2>
     {{else}}
-      {{#if hasPermissions}}
+      {{#if selectedSwitch.hasPermissions}}
           <div class="divSwitch {{#if selectedSwitch.isOn}} on {{else}} off {{/if}}">
-          <form>
-            <input type="hidden" value="{{selectedSwitch.private_uuid}}" name="private_uuid">
-            <label class='switch'>
-<!--              TODO: Aplicar en JS un listener sobre el checkbox para encender/apagar el switch-->
-              <input type='checkbox' id='changeSwitchState' name='switch_state' {{#if selectedSwitch.isOn}} checked {{/if}}>
-              <span class='slider round'></span>
-            </label>
-            {{#unless selectedSwitch.isOn}}
-              <label class="form-label switch_time_label">{{i18n "Time"}}: </label>
-              <input type="number" class="form-input switch_time" name="time_on" value="60">
-            {{/unless}}
-          </form>
-          <h3 class="switch_name">{{selectedSwitch.switch_name}}</h3>
+            <form>
+              <label class='switch'>
+  <!--              TODO: Aplicar en JS un listener sobre el checkbox para encender/apagar el switch-->
+                <input type='checkbox' id='changeSwitchState' name='switch_state' {{#if selectedSwitch.isOn}} checked {{/if}}>
+                <span class='slider round'></span>
+              </label>
+              {{#unless selectedSwitch.isOn}}
+                <label class="form-label switch_time_label">{{i18n "Time"}}: </label>
+                <input type="number" id="time_on" class="form-input switch_time" name="time_on" value="60">
+              {{/unless}}
+            </form>
+            <h3 class="switch_name">{{selectedSwitch.switch_name}}</h3>
 
-          {{#if selectedSwitch.last_power_on}}
-            {{#if selectedSwitch.isOn}}
-<!--              Si está encendido -->
-                <p class="switch_time_poweredOn">{{i18n "Is switched on since %s" selectedSwitch.last_power_on}}</p>
+            {{#if selectedSwitch.last_power_on}}
+              {{#if selectedSwitch.isOn}}
+  <!--              Si está encendido -->
+                  <p class="switch_time_poweredOn">{{i18n "Is switched on since %s" selectedSwitch.last_power_on}}</p>
+              {{else}}
+  <!--              Si está apagado -->
+                  <p class="switch_time_poweredOff"> {{i18n "Last lit on %s at %s" selectedSwitch.last_power_on}}</p>
+              {{/if}}
             {{else}}
-<!--              Si está apagado -->
-                <p class="switch_time_poweredOff"> {{i18n "Last lit on %s at %s" selectedSwitch.last_power_on}}</p>
+  <!--            Si no existe -->
+              <p class="switch_time_poweredOff">{{i18n "It never has been powered on"}}</p>
             {{/if}}
-          {{else}}
-<!--            Si no existe -->
-            <p class="switch_time_poweredOff">{{i18n "It never has been powered on"}}</p>
-          {{/if}}
 
-          <label for="switch_public_share" class="switch_boton-label">
-            <input type="radio" id="switch_public_share" name="seleccion" class="switch_boton-radio">
-              <img src="img/share.png" alt="Compartir" class="switch_button1" height="30" width="30">
-            </input>
-            <input type="text" class="texto-input form-input"
-                   value="{{selectedSwitch.public_uuid}}"
-                   readonly>
-          </label>
-          <label for="switch_private_share" class="switch_boton-label">
-            <input type="radio" id="switch_private_share" name="seleccion" class="switch_boton-radio">
-              <img src="img/share_with_permission.png" class="switch_button3" alt="Compartir con permisos" height="30"
-                 width="30">
-            </input>
-            <input type="text" class="texto-input form-input"
-                   value="{{selectedSwitch.private_uuid}}"
-                   readonly>
-          </label>
-          <p class="switch_owner">{{selectedSwitch.owner_name}}</p>
-<!--              TODO: Aplicar en JS un listener sobre icono para editarlo-->
-          <img src="img/edit.png" alt="Editar" id="edit_button" data-public-uuid="{{selectedSwitch.public_uuid}}" class="switch_button2" height="30" width="30"></a>
+            <label for="switch_public_share" class="switch_boton-label">
+              <input type="radio" id="switch_public_share" name="seleccion" class="switch_boton-radio">
+                <img src="img/share.png" alt="Compartir" class="switch_button1" height="30" width="30">
+              </input>
+              <input type="text" class="texto-input form-input"
+                     value="http://localhost/#view-switch?public_uuid={{selectedSwitch.public_uuid}}"
+                     readonly>
+            </label>
+
+            <label for="switch_private_share" class="switch_boton-label">
+              <input type="radio" id="switch_private_share" name="seleccion" class="switch_boton-radio">
+                <img src="img/share_with_permission.png" class="switch_button3" alt="Compartir con permisos" height="30"
+                   width="30">
+              </input>
+              <input type="text" class="texto-input form-input"
+                     value="http://localhost/#view-switch?private_uuid={{selectedSwitch.private_uuid}}"
+                     readonly>
+            </label>
+
+            <p class="switch_owner">{{selectedSwitch.owner_name}}</p>
+
+  <!--              TODO: Aplicar en JS un listener sobre icono para editarlo-->
+            <img src="img/edit.png" alt="Editar" id="edit_button" data-public-uuid="{{selectedSwitch.public_uuid}}"
+                 class="switch_button2" height="30" width="30"></a>
+          </div>
       {{else}}
           <div class="divSwitch {{#if selectedSwitch.isOn}} on {{else}} off {{/if}}">
           <div class="circle"></div>
@@ -79,18 +82,19 @@
               <img src="img/share.png" alt="Compartir" class="switch_button1" height="30" width="30">
             </input>
             <input type="text" class="texto-input form-input"
-                   value="{{selectedSwitch.public_uuid}}"
+                   value="http://localhost/#view-switch?public_uuid={{selectedSwitch.public_uuid}}"
                    readonly>
           </label>
+
           <p class="switch_owner">{{selectedSwitch.owner_name}}</p>
-            {{#if currentuser}}
-              {{#if_eq currentuser selectedSwitch.owner_name}}
+            {{#if user.currentUser}}
+              {{#if_eq user.currentUser selectedSwitch.owner_name}}
                 <!-- Contenido a renderizar si currentuser es igual a selectedSwitch.owner_name -->
               {{else}}
                 <!-- Contenido a renderizar si currentuser no es igual a selectedSwitch.owner_name -->
                 <form>
 <!--              TODO: Aplicar en JS un listener sobre el botón para cambiar la suscripción-->
-                  <input type="image" id="changeSubscriptionStateImg" src="img/{{#if is_subscribed}}alarm-bell_silenced.png{{else}}alarm-bell.png{{/if}}"
+                  <input type="image" id="changeSubscriptionStateImg" src="img/{{#if selectedSwitch.is_subscribed}}alarm-bell_silenced.png{{else}}alarm-bell.png{{/if}}"
                          class="switch_button2" alt="Enviar" name="submit">
                 </form>
               {{/if_eq}}
@@ -100,21 +104,26 @@
     {{/unless}}
 
 
-    {{#if currentuser}}
-      {{#if_eq currentuser selectedSwitch.owner_name}}
+    {{#if user.currentUser}}
+
+      {{#if_eq user.currentUser selectedSwitch.owner_name}}
         <!-- Contenido a renderizar si currentuser es igual a selectedSwitch.owner_name -->
       {{else}}
         <!-- Contenido a renderizar si currentuser no es igual a selectedSwitch.owner_name -->
 <!--              TODO: Aplicar en JS un listener sobre el botón para cambiar la suscripción-->
-        <button type="submit" class="{{#if is_subscribed}}form-delete{{else}}form-submit{{/if}} button-all-width"
-                value="{{#if is_subscribed}}{{i18n "Unsubscribe from switch"}}{{else}}{{i18n "Subscribe to switch"}}{{/if}}" name="submit">
+
+        <button class="{{#if selectedSwitch.is_subscribed}}form-delete{{else}}form-submit{{/if}} button-all-width"
+                value="{{#if selectedSwitch.is_subscribed}}{{i18n "Unsubscribe from switch"}}{{else}}{{i18n "Subscribe to switch"}}{{/if}}" id="submitSubscription">
+          {{#if selectedSwitch.is_subscribed}}{{i18n "Unsubscribe from switch"}}{{else}}{{i18n "Subscribe to switch"}}{{/if}}
         </button>
       {{/if_eq}}
     {{/if}}
 
-    <h3>{{i18n "There are %s subscribers to this switch" usersSubscribed }}</h3>
+    <h3>{{i18n "There are %s subscribers to this switch" selectedSwitch.num_subscriptions}}</h3>
+
     <textarea class="form-input" id="switch_description" name="switch_description" rows="5" maxlength="1000" readonly
     >{{selectedSwitch.switch_description}}</textarea>
+
   </main>
 
 

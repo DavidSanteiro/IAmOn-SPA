@@ -50,13 +50,13 @@ class SwitchMapper {
 			$power_off = DateTime::createFromFormat(self::DATE_FORMAT, $switch["power_off"], new DateTimeZone('UTC'));
 			if(isset($switch["last_power_on"])){
 				$last_power_on = DateTime::createFromFormat(self::DATE_FORMAT, $switch["last_power_on"], new DateTimeZone('UTC'));
-				$last_power_on = $last_power_on->setTimezone(new DateTimeZone('Europe/Madrid'));
+				$last_power_on = $last_power_on->setTimezone(new DateTimeZone('UTC'));
 			} else{
 				$last_power_on = null;
 			}
 
 			array_push($userSwitches, new MySwitch($switch["switch_name"], $user, $switch["public_uuid"],
-				$switch["private_uuid"], $switch["description"], $power_off->setTimezone(new DateTimeZone('Europe/Madrid')), $last_power_on));
+				$switch["private_uuid"], $switch["description"], $power_off, $last_power_on));
 		}
 
 		return $userSwitches;
@@ -84,13 +84,12 @@ class SwitchMapper {
 			$power_off = DateTime::createFromFormat(self::DATE_FORMAT, $switch["power_off"], new DateTimeZone('UTC'));
 			if(isset($switch["last_power_on"])){
 				$last_power_on = DateTime::createFromFormat(self::DATE_FORMAT, $switch["last_power_on"], new DateTimeZone('UTC'));
-				$last_power_on = $last_power_on->setTimezone(new DateTimeZone('Europe/Madrid'));
 			} else{
 				$last_power_on = null;
 			}
 
 			array_push($userSuscribedSwitches, new MySwitch($switch["switch_name"], new User($switch["user_name"]),
-				$switch["public_uuid"], null, $switch["description"], $power_off->setTimezone(new DateTimeZone('Europe/Madrid')), $last_power_on));
+				$switch["public_uuid"], null, $switch["description"], $power_off, $last_power_on));
 		}
 
 		return $userSuscribedSwitches;
@@ -197,7 +196,6 @@ class SwitchMapper {
             $power_off = DateTime::createFromFormat(self::DATE_FORMAT, $switch["power_off"], new DateTimeZone('UTC'));
             if(isset($switch["last_power_on"])){
                 $last_power_on = DateTime::createFromFormat(self::DATE_FORMAT, $switch["last_power_on"], new DateTimeZone('UTC'));
-                $last_power_on = $last_power_on->setTimezone(new DateTimeZone('Europe/Madrid'));
             } else{
                 $last_power_on = null;
             }
@@ -208,7 +206,7 @@ class SwitchMapper {
 				$public_uuid,
 				$switch["private_uuid"],
 				$switch["description"],
-				$power_off->setTimezone(new DateTimeZone('Europe/Madrid')),
+				$power_off,
 				$last_power_on);
 		} else {
 			return NULL;
@@ -230,10 +228,9 @@ class SwitchMapper {
 		$stmt->execute(array($private_uuid));
 		$switch = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		$fechaHora = DateTime::createFromFormat(self::DATE_FORMAT, $switch["power_off"], new DateTimeZone('UTC'));
+		$power_off = DateTime::createFromFormat(self::DATE_FORMAT, $switch["power_off"], new DateTimeZone('UTC'));
 		if(isset($switch["last_power_on"])){
 			$last_power_on = DateTime::createFromFormat(self::DATE_FORMAT, $switch["last_power_on"], new DateTimeZone('UTC'));
-			$last_power_on = $last_power_on->setTimezone(new DateTimeZone('Europe/Madrid'));
 		} else{
 			$last_power_on = null;
 		}
@@ -245,7 +242,7 @@ class SwitchMapper {
 				$switch["public_uuid"],
 				$private_uuid,
 				$switch["description"],
-				$fechaHora->setTimezone(new DateTimeZone('Europe/Madrid')),
+				$power_off,
 				$last_power_on);
 		} else {
 			return NULL;

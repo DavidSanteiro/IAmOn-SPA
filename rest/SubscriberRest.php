@@ -30,7 +30,7 @@ class SubscriberRest extends BaseRest
                 parent::error404("Switch no encontrado");
             } else {
                 $username = $currentUser->getUsername();
-                if ($data->is_suscribed) {
+                if ($data->is_subscribed) {
                     $this->switchMapper->removeSuscriptionToSwitch($username, $switch);
                     parent::answerString200("Desuscrito del switch");
                 } else {
@@ -39,6 +39,7 @@ class SubscriberRest extends BaseRest
                 }
             }
         } catch (Exception $e) {
+            echo $e;
             parent::error500();
         }
 
@@ -49,7 +50,8 @@ class SubscriberRest extends BaseRest
     public function isSubscribed($public_uuid, $userName)
     {
         $user_name = parent::authenticateUser();
-        if ($user_name != $userName){
+
+        if ($user_name->getUsername() != $userName){
             parent::error403("User in URL does not match JWT's user");
         }
         try {
@@ -72,7 +74,9 @@ class SubscriberRest extends BaseRest
             } else {
                 $this->switchMapper->getNumSubscriptions($public_uuid);
                 $numSubscriptions = $this->switchMapper->getNumSubscriptions($public_uuid);
-                parent::answerJson200(array("num_subscriptions" => $numSubscriptions));
+                parent::answerJson200(array(
+                    "public_uuid" => $public_uuid,
+                    "num_subscriptions" => $numSubscriptions));
             }
         }catch (Exception){
             parent::error500();

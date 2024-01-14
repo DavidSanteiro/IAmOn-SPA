@@ -51,11 +51,25 @@ class UserService {
         && jwtToken != null && jwtToken !== "undefined") {
         this.checkIfIsValidToken({user_name: userName, jwt_token: jwtToken})
           .then(() => {
+            // Refrescamos el Session Storage
             window.sessionStorage.setItem('user_name', userName);
             window.sessionStorage.setItem('jwt_token', jwtToken);
-            resolve(userName)
+
+            // Configurar el encabezado 'Authorization' para futuras solicitudes
+            $.ajaxSetup({
+              beforeSend: (xhr) => {
+                const token = window.sessionStorage.getItem('jwt_token');
+                xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+              }
+            });
+            resolve(userName);
+
           }) // Devuelve un objeto con el valor userName
-          .catch(reject);
+          // .catch(reject);
+          .catch(error => {
+            console.error(error);
+            reject(error);
+          });
       } else {
         resolve(null);
       }
