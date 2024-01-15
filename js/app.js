@@ -42,6 +42,8 @@ Promise.all([
     // User templates
     loadTextFile('templates/components/login.hbs').then((source) =>
       Handlebars.templates.login = Handlebars.compile(source)),
+    loadTextFile('templates/components/forgot.hbs').then((source) =>
+      Handlebars.templates.forgot = Handlebars.compile(source)),
     loadTextFile('templates/components/register.hbs').then((source) =>
       Handlebars.templates.register = Handlebars.compile(source)),
 
@@ -56,8 +58,7 @@ Promise.all([
 
     loadTextFile('templates/components/switch-view.hbs').then((source) =>
       Handlebars.templates.switchview = Handlebars.compile(source)),
-    loadTextFile('templates/components/post-row.hbs').then((source) =>
-      Handlebars.templates.postrow = Handlebars.compile(source))
+
   ])
   .then(() => {
     $(() => {

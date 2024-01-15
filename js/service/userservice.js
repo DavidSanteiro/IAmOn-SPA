@@ -17,9 +17,13 @@ class UserService {
 
           // Guardar el nombre de usuario en sessionStorage
           window.sessionStorage.setItem('user_name', user_name);
-
           // Guardar el token JWT en sessionStorage
           window.sessionStorage.setItem('jwt_token', jwt_token);
+
+          // Guardar el nombre de usuario como cookie para poder acceder desde otras pestañas sin iniciar sesión
+          this.setCookie('user_name', user_name, 1);
+          // Guardar el token JWT como cookie para poder acceder desde otras pestañas sin iniciar sesión
+          this.setCookie('jwt_token', jwt_token, 1);
 
           // Configurar el encabezado 'Authorization' para futuras solicitudes
           $.ajaxSetup({
@@ -113,8 +117,12 @@ class UserService {
   }
 
   logout() {
+    // Eliminamos los datos de session storage
     window.sessionStorage.removeItem('user_name');
     window.sessionStorage.removeItem('jwt_token');
+    // Eliminamos los datos de las cookies
+    this.deleteCookie('user_name');
+    this.deleteCookie('jwt_token')
     $.ajaxSetup({
       beforeSend: (xhr) => {
       }
@@ -128,5 +136,51 @@ class UserService {
       data: JSON.stringify(user),
       contentType: 'application/json'
     });
+  }
+
+  askForSecurityCode(user_email){
+    return $.ajax({
+      url: AppConfig.backendServer + '/rest/account/password',
+      method: 'PUT',
+      data: JSON.stringify(user_email),
+      contentType: 'application/json'
+    });
+  }
+
+  resetPassword(data){
+    return $.ajax({
+      url: AppConfig.backendServer + '/rest/account/password',
+      method: 'POST',
+      data: JSON.stringify(data),
+      contentType: 'application/json'
+    });
+  }
+
+  // Funciones para trabajar con las cookies
+  getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+
+  deleteCookie(cname) {
+    document.cookie = cname + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }
 }

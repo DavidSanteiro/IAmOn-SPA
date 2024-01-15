@@ -84,13 +84,12 @@ class SwitchRest extends BaseRest {
 
 			parent::answerJson200(array(
 					"switch_public_uuid" => $switch->getPublicUuid(),
-					"switch_last_power_on" => $switch->getLastPowerOn()->format(SwitchMapper::DATE_FORMAT),
-					"switch_power_off" => $switch->getPowerOff())
+					"switch_last_power_on" => $switch->getLastPowerOn()?->format(DATE_ATOM),
+					"switch_power_off" => $switch->getPowerOff()?->format(DATE_ATOM))
 			);
 
 		}catch(ValidationException $ex) {
 			// If can't validate data
-			// TODO no se que poner aquí. Si entra aquí no valida pero no es culpa del usuario (DUDA)
 			parent::error400($ex->getErrors());
 
 		} catch (Exception $e) {
@@ -126,8 +125,8 @@ class SwitchRest extends BaseRest {
 					"switch_private_uuid" => $switch->getPrivateUuid(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
-					"switch_last_power_on" => $switch->getLastPowerOn()?->format(SwitchMapper::DATE_FORMAT),
-					"switch_power_off" => $switch->getPowerOff())
+					"switch_last_power_on" => $switch->getLastPowerOn()?->format(DATE_ATOM),
+					"switch_power_off" => $switch->getPowerOff()?->format(DATE_ATOM))
 			);
 
 		}catch(ValidationException $ex) {
@@ -181,8 +180,8 @@ class SwitchRest extends BaseRest {
 					"switch_private_uuid" => $switch->getPrivateUuid(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
-					"switch_last_power_on" => $switch->getLastPowerOn()?->format(SwitchMapper::DATE_FORMAT),
-					"switch_power_off" => $switch->getPowerOff())
+					"switch_last_power_on" => $switch->getLastPowerOn()?->format(DATE_ATOM),
+					"switch_power_off" => $switch->getPowerOff()?->format(DATE_ATOM))
 			);
 
 		}catch(ValidationException $ex) {
@@ -249,9 +248,8 @@ class SwitchRest extends BaseRest {
                     "owner_name" => $switch->getOwner()->getUsername(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
-					"switch_last_power_on" =>
-                        $switch->getLastPowerOn()?->format(SwitchMapper::DATE_FORMAT),
-					"switch_power_off" => $switch->getPowerOff()
+					"switch_last_power_on" => $switch->getLastPowerOn()?->format(DATE_ATOM),
+					"switch_power_off" => $switch->getPowerOff()?->format(DATE_ATOM)
 				];
 			}
 
@@ -278,16 +276,13 @@ class SwitchRest extends BaseRest {
 			$arrayUserSubscribedSwitches = array();
 			foreach ($switches as $switch){
 
-			    $lastPowerOn = $switch->getLastPowerOn();
-                $switchLastPowerOn = ($lastPowerOn !== null) ? $lastPowerOn->format(SwitchMapper::DATE_FORMAT) : null;
-
 				$arrayUserSubscribedSwitches[] = [
 					"switch_public_uuid" => $switch->getPublicUuid(),
                     "owner_name" => $switch->getOwner()->getUsername(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
-					"switch_last_power_on" => $switchLastPowerOn,
-					"switch_power_off" => $switch->getPowerOff()
+					"switch_last_power_on" => $switch->getLastPowerOn()?->format(DATE_ATOM),
+					"switch_power_off" => $switch->getPowerOff()?->format(DATE_ATOM)
 				];
 			}
 
@@ -317,8 +312,8 @@ class SwitchRest extends BaseRest {
                     "owner_name" => $switch->getOwner()->getUsername(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
-					"switch_last_power_on" => $switch->getLastPowerOn()?->format(SwitchMapper::DATE_FORMAT),
-					"switch_power_off" => $switch->getPowerOff())
+					"switch_last_power_on" => $switch->getLastPowerOn()?->format(DATE_ATOM),
+					"switch_power_off" => $switch->getPowerOff()?->format(DATE_ATOM))
 			);
 
 		} catch (Exception $e) {
@@ -340,15 +335,14 @@ class SwitchRest extends BaseRest {
 		}
 
 		try {
-
 			parent::answerJson200(array(
 					"switch_public_uuid" => $switch->getPublicUuid(),
 					"switch_private_uuid" => $switch->getPrivateUuid(),
                     "owner_name" => $switch->getOwner()->getUsername(),
 					"switch_name" => $switch->getSwitchName(),
 					"switch_description" => $switch->getDescription(),
-					"switch_last_power_on" => $switch->getLastPowerOn()?->format(SwitchMapper::DATE_FORMAT),
-					"switch_power_off" => $switch->getPowerOff())
+					"switch_last_power_on" => $switch->getLastPowerOn()?->format(DATE_ATOM),
+					"switch_power_off" => $switch->getPowerOff()?->format(DATE_ATOM))
 			);
 
 		} catch (Exception $e) {

@@ -3,6 +3,8 @@ I18n.translations = {
   "Welcome back": "Bienvenido de nuevo",
   "Register": "Regístrate",
   "Welcome to IAmOn": "Bienvenido a IAmOn",
+  "Let's recover access to your account": "Vamos a recuperar el acceso a tu cuenta",
+  "Have you forgotten your password?": "¿Te has olvidado de la contraseña?",
   "Time": "Tiempo",
   "Name": "Nombre",
   "Switch name": "Nombre del switch",
@@ -21,6 +23,7 @@ I18n.translations = {
   "Delete": "Eliminar",
   "Edit": "Editar",
   "Cancel": "Cancelar",
+  "Recover your password": "Recupera tu contraseña",
 
   "Add switch": "Añadir switch",
   "Control switch": "Controla switch",
@@ -46,12 +49,15 @@ I18n.translations = {
   "Username": "Usuario",
   "Email": "Correo electrónico",
   "Password": "Contraseña",
+  "Security code": "Código de seguridad",
 
   "Not user?": "¿No tienes cuenta?",
   "Register here!": "¡Regístrate aquí!",
   "Already registered?": "¿Ya te has registrado?",
+  "Do you remember your password?": "¿Ya recuerdas tu contraseña?",
   "Go to login": "Ir a login",
 
+  "Language": "Idioma",
   "Spanish": "Español",
   "English": "Inglés",
   "are you sure?": "¿Estás seguro?",

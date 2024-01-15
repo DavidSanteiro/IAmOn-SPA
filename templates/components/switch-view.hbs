@@ -22,10 +22,10 @@
             {{#if selectedSwitch.last_power_on}}
               {{#if selectedSwitch.isOn}}
   <!--              Si está encendido -->
-                  <p class="switch_time_poweredOn">{{i18n "Is switched on since %s" selectedSwitch.last_power_on}}</p>
+                  <p class="switch_time_poweredOn">{{i18n "Is switched on since %s" selectedSwitch.last_power_on.HHMM}}</p>
               {{else}}
   <!--              Si está apagado -->
-                  <p class="switch_time_poweredOff"> {{i18n "Last lit on %s at %s" selectedSwitch.last_power_on}}</p>
+                  <p class="switch_time_poweredOff"> {{i18n "Last lit on %s at %s" selectedSwitch.last_power_on.DDMMAAAA selectedSwitch.last_power_on.HHMM}}</p>
               {{/if}}
             {{else}}
   <!--            Si no existe -->
@@ -85,7 +85,6 @@
                    value="http://localhost/#view-switch?public_uuid={{selectedSwitch.public_uuid}}"
                    readonly>
           </label>
-
           <p class="switch_owner">{{selectedSwitch.owner_name}}</p>
             {{#if user.currentUser}}
               {{#if_eq user.currentUser selectedSwitch.owner_name}}
@@ -98,6 +97,8 @@
                          class="switch_button2" alt="Enviar" name="submit">
                 </form>
               {{/if_eq}}
+
+
             {{/if}}
         </div>
       {{/if}}
@@ -117,7 +118,15 @@
           {{#if selectedSwitch.is_subscribed}}{{i18n "Unsubscribe from switch"}}{{else}}{{i18n "Subscribe to switch"}}{{/if}}
         </button>
       {{/if_eq}}
+
+    {{else}}
+      <a href="#login" >
+      <button class="form-submit button-all-width"  id="LoginToInteract" >
+         Login
+      </button>
+      </a>
     {{/if}}
+
 
     <h3>{{i18n "There are %s subscribers to this switch" selectedSwitch.num_subscriptions}}</h3>
 
@@ -125,27 +134,4 @@
     >{{selectedSwitch.switch_description}}</textarea>
 
   </main>
-
-
-<!--<div>-->
-<!--  <h2>{{selectedPost.title}}</h2> {{i18n 'by'}} {{selectedPost.author_id}}-->
-<!--  <div>{{selectedPost.content}}</div>-->
-<!--  <div id="comments">-->
-<!--    <h3>{{i18n 'Comments'}}</h3>-->
-  <!--    {{#each selectedPost.comments}}-->
-<!--      <p>{{author}} commented</p>-->
-<!--      <p>-->
-<!--        {{content}}-->
-<!--      </p>-->
-<!--      <hr>-->
-  <!--    {{/each}}-->
-<!--  </div>-->
-  <!--  {{#if isLogged}}-->
-<!--    <h2>{{i18n 'Leave a comment'}}</h2>-->
-<!--    <div>-->
-<!--      <textarea rows="4" cols="20" id="commentcontent"></textarea>{{commentErrors.content}}-->
-<!--    </div>-->
-<!--    <button id="savecommentbutton">{{i18n 'Save comment'}}</button>-->
-  <!--  {{/if}}-->
-<!--</div>-->
 </div>

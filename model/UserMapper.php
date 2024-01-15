@@ -102,25 +102,59 @@ class UserMapper {
 		return $user_password;
 	}
 
+    public function getUserFromEmail($user_email): ?User {
+        $stmt = $this->db->prepare("SELECT User.user_name FROM User WHERE User.user_email=? ");
+        $stmt->execute(array($user_email));
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-	public function enviarCorreoPassword($user_email, $user_password):void{
-		// Prepara el correo electrónico
+        if($user != null) {
+            return new User(
+                $user["user_name"],
+                null,
+                $user_email);
+        }
+        return null;
+    }
 
-		$headers['From']    = 'noresponder-iamon@hotmail.com';
-		$headers['To']      = $user_email;
-		$headers['Subject'] = 'Se ha restablecido tu contraseña';
-		$body = 'Tu contraseña es : '.$user_password.' Si no has solicitado el cambio de contraseña, por favor, contacta con nosotros.';
-		$params['host'] = '172.18.96.1'; //esta es la IP de la máquina host cuando se usa docker, allí hay un fakesmtp
-		$params['port'] = '2525'; // puerto del fakesmtp
-		// Create the mail object using the Mail::factory method
-		$mail_object = Mail::factory('smtp', $params);
-		$mail_object->send($user_email, $headers, $body);
-		
-	}
+    public function generateAndSendSecurityCode($user) : void {
+        $currentDate = new DateTime();
+        $securityCode = mt_rand(100000, 999999); // Número aleatorio de 6 dígitos;
+
+        $stmt = $this->db->prepare("UPDATE User SET security_code = ?, security_code_date = ?  WHERE user_name = ?");
+        $stmt->execute(array(
+            $securityCode,
+            $currentDate->format('Y-m-d H:i:s'),
+            $user->getUsername()));
+
+        // Prepara el correo electrónico
+        $headers['From']    = 'noresponder-iamon@hotmail.com';
+        $headers['To']      = $user->getEmail();
+        $headers['Subject'] = 'Se ha restablecido tu contraseña';
+        $body = 'Tu código de seguridad es : "'.$securityCode.'". La validez del código es de 10 minutos.
+        Si no has solicitado el cambio de contraseña, por favor, contacta con nosotros.';
+        $params['host'] = '192.168.1.51'; //esta es la IP de la máquina host cuando se usa docker, allí hay un fakesmtp
+        $params['port'] = '2525'; // puerto del fakesmtp
+        // Create the mail object using the Mail::factory method
+        $mail_object = Mail::factory('smtp', $params);
+        $mail_object->send($user->getEmail(), $headers, $body);
+    }
+
+    public function getSecurityElementsFromEmail($user_email): ?array {
+        $stmt = $this->db->prepare("SELECT User.security_code, User.security_code_date FROM User WHERE User.user_email=? ");
+        $stmt->execute(array($user_email));
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($data != null) {
+            $toRet = array();
+                array_push($toRet, $data["security_code"], new DateTime($data["security_code_date"]));
+                return $toRet;
+        }
+        return null;
+    }
 
 	public function updateUser($user_name, $user_new_password, $user_email) {
 		try {
-			$sql = "UPDATE users SET user_name = ?, user_password = ? WHERE user_email = ?";
+			$sql = "UPDATE User SET user_name = ?, user_password = ? WHERE user_email = ?";
 			$stmt = $this->db->prepare($sql);
 
 			//':user_new_password' => password_hash($user_new_password, PASSWORD_DEFAULT),
@@ -133,7 +167,7 @@ class UserMapper {
 
 	public function deleteUser($user_name) {
 		try {
-			$sql = "DELETE FROM users WHERE user_name = ?";
+			$sql = "DELETE FROM User WHERE user_name = ?";
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute(array($user_name));
 		} catch (PDOException $e) {

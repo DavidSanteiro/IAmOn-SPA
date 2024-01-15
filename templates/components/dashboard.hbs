@@ -1,5 +1,5 @@
 <main>
-  <div id="mySwitches">
+  <section id="mySwitches">
     <h1>{{i18n 'My Switches'}} ({{mySwitches.length}})</h1>
 
     {{#unless mySwitches.length}}
@@ -30,15 +30,18 @@
 
           <h3 class="switch_name">{{this.switch_name}}</h3>
 
-          {{#if hasDateSwitchOn}}
-            {{#if isOn}}
-              <p class="switch_time_poweredOn">{{i18n 'Is switched on since %s' this.last_power_on}}</p>
+            {{#if this.last_power_on}}
+                {{#if this.isOn}}
+                    <!--              Si está encendido -->
+                    <p class="switch_time_poweredOn">{{i18n "Is switched on since %s" this.last_power_on.HHMM}}</p>
+                {{else}}
+                    <!--              Si está apagado -->
+                    <p class="switch_time_poweredOff"> {{i18n "Last lit on %s at %s" this.last_power_on.DDMMAAAA this.last_power_on.HHMM}}</p>
+                {{/if}}
             {{else}}
-              <p class="switch_time_poweredOff">{{i18n 'Last lit on %s at %s' this.last_power_on}}</p>
+                <!--            Si no existe -->
+                <p class="switch_time_poweredOff">{{i18n "It never has been powered on"}}</p>
             {{/if}}
-          {{else}}
-            <p class="switch_time_poweredOff"> {{i18n 'It never has been powered on' }}</p>
-          {{/if}}
 
           <label for="switch_private_share{{index}}" class="switch_boton-label">
             <input type="radio" id="switch_private_share{{index}}" name="seleccion" class="switch_boton-radio">
@@ -65,10 +68,10 @@
     <a id="new_switch">
       <img src="img/add.png" class="add_switch" alt="añadir switch">
     </a>
-  </div>
+  </section>
 
 
-  <div id="subscribedSwitches">
+  <section id="subscribedSwitches">
     <h1>{{i18n 'Friends Switches'}} ({{subscribedSwitches.length}})</h1>
 
     {{#unless subscribedSwitches.length}}
@@ -79,23 +82,22 @@
     {{else}}
 
       {{#each subscribedSwitches as |switch index|}}
+
         <div class="divSwitch {{#if isOn}} on {{else}} off {{/if}}">
           <div class="circle"></div>
           <h3 class="switch_name">{{this.switch_name}}</h3>
-          <p class="switch_time_poweredOn">
-            {{#if hasDateSwitchOn}}
-              {{#if isOn}}
-                {{i18n 'Is switched on since %s'}} {{this.last_power_on}}
-              {{else}}
-                {{i18n 'Last lit on %s at %s'}} {{this.last_power_on}}
-                <!--    TODO -> solucionar printf en i18n. Creo que no se puede utilizar '%s'-->
-                <!--                    echo(sprintf(i18n("Last lit on %s at %s"),-->
-                <!--                    $switch->getLastPowerOn()->format($dateFormat), $switch->getLastPowerOn()->format($hourFormat)));-->
-              {{/if}}
+            {{#if this.last_power_on}}
+                {{#if this.isOn}}
+                    <!--              Si está encendido -->
+                    <p class="switch_time_poweredOn">{{i18n "Is switched on since %s" this.last_power_on.HHMM}}</p>
+                {{else}}
+                    <!--              Si está apagado -->
+                    <p class="switch_time_poweredOff"> {{i18n "Last lit on %s at %s" this.last_power_on.DDMMAAAA this.last_power_on.HHMM}}</p>
+                {{/if}}
             {{else}}
-              {{i18n "It never has been powered on"}}
+                <!--            Si no existe -->
+                <p class="switch_time_poweredOff">{{i18n "It never has been powered on"}}</p>
             {{/if}}
-          </p>
 
           <label for="switch_public_share{{index}}+{{mySwitches.length}}" class="switch_boton-label">
             <input type="radio" id="switch_public_share{{index}}+{{mySwitches.length}}" name="seleccion" class="switch_boton-radio">
@@ -106,21 +108,14 @@
 
           <p class="switch_owner">{{this.owner_name}}</p>
 
-
           <img src="img/info.png" alt="Info" class="switch_button2 view" height="30" width="30" data-public-uuid="{{this.public_uuid}}">
 
-
-          <!--    TODO -> Está a medio hacer. Acoplarlo a JS-->
           <form>
-
             <input type="image" id="changeSubscriptionStateImgDashboard" src="img/alarm-bell_silenced.png"
                    class="switch_button3" alt="Enviar" name="submit" data-public-uuid="{{this.public_uuid}}">
           </form>
-
-
         </div>
-
       {{/each}}
     {{/unless}}
-  </div>
+  </section>
 </main>

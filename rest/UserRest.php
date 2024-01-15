@@ -103,15 +103,30 @@ class UserRest extends BaseRest {
 		}
 	}
 
-	public function resetPassword ($data){
+	public function resetPassword($data){
 		// Comprueba si el usuario existe
 		try {
 			// Verifica si la contraseña es correcta
 			if ($this->userMapper->userEmailExists($data->user_email)) {
-				// Si existe, devuelve una respuesta HTTP 200 porque lo encontró
-				$user_password = $this->userMapper->recuperarPassword($data->user_email);
-				$this->userMapper->enviarCorreoPassword($data->user_email, $user_password);
-				parent::answerJson200(array("user_email" => $data->user_email));
+
+                $arraySecurityElems = $this->userMapper->getSecurityElementsFromEmail($data->user_email);
+                $securityCode = $arraySecurityElems[0];
+
+                $securityCodeDate = $arraySecurityElems[1]->modify("+ 10 minutes");
+
+                $currentTime = new DateTime();
+
+                if ($securityCode == $data->security_code){
+                    if ($securityCodeDate < $currentTime){
+                        $this->error403("El código ha caducado.");
+                    }else{
+                        $user = $this->userMapper->getUserFromEmail($data->user_email);
+                        $this->userMapper->updateUser($user->getUsername(), $data->user_password, $user->getEmail());
+                        parent::answerString200("Se ha cambiado correctamente la contraseña. Ahora puedes iniciar sesión.");
+                    }
+                }else{
+                    parent::error403("Código no registrado");
+                }
 			} else {
 				// Si el email no existe, devuelve una respuesta HTTP 401
 				parent::error404("Email no existente.");
@@ -120,8 +135,26 @@ class UserRest extends BaseRest {
 			// Si la base de datos falla o hay un error imprevisto
 			parent::error500();
 		}
-	
 	}
+
+    public function generateSecurityCode($data) {
+
+        try {
+            // Comprueba si el nombre de usuario o el correo electrónico ya existen
+            if (is_null($data->user_email) || !$this->userMapper->userEmailExists($data->user_email)) {
+                // Si no existe, devuelve una respuesta HTTP 404
+                parent::error404("El correo electrónico no existe.");
+            }
+            $user = $this->userMapper->getUserFromEmail($data->user_email);
+            $this->userMapper->generateAndSendSecurityCode($user);
+
+            parent::answerString200("Te hemos enviado un correo. Introduce el código que te hemos enviado.");
+
+        } catch (Exception $e) {
+            // Si la base de datos falla o hay un error imprevisto
+            parent::error500($e->getMessage());
+        }
+    }
 
 	public function editAccount($data){
 		try {
@@ -204,8 +237,9 @@ $userRest = new UserRest();
 URIDispatcher::getInstance()
 ->map("POST", "/account", array($userRest,"login"))
 ->map("POST", "/account/new", array($userRest,"register"))
-->map("GET", "/account/userAvailability/$1", array($userRest,"checkUserAvailability"))
-->map("POST", "/account/passwordReset", array($userRest,"resetPassword"))
 ->map("PUT", "/account", array($userRest,"editAccount"))
 ->map("DELETE", "/account", array($userRest,"deleteAccount"))
-->map("PUT", "/account/checkToken", array($userRest,"checkIfNotExpired"));
+->map("PUT", "/account/checkToken", array($userRest,"checkIfNotExpired"))
+->map("GET", "/account/userAvailability/$1", array($userRest,"checkUserAvailability"))
+->map("POST", "/account/password", array($userRest,"resetPassword"))
+->map("PUT", "/account/password", array($userRest,"generateSecurityCode"));

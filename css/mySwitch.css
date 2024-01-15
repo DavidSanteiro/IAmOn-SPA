@@ -1,5 +1,5 @@
 /* mobile layout: single colum, all items occupy the entire row, so wrap */
-header, main, footer {
+header, section, footer {
     flex-basis: 100%;
 }
 
@@ -9,8 +9,9 @@ body{
 }
   
 /* Medium devices (desktops, 960px and up) */
-@media (min-width: 500px) {
-	main {
+@media (min-width: 650px) {
+	section {
+
 		max-width: 48%;
 	}
 }
@@ -23,7 +24,7 @@ body{
 	nav{
 		display: flex;
 	}
-	main {
+	section {
 		max-width: 41%;
 	}
 }

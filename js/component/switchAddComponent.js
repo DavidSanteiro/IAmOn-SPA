@@ -6,7 +6,8 @@ class SwitchAddComponent extends Fronty.ModelComponent {
     this.addModel('user', userModel);
     this.router = router;
 
-    this.postsService = new SwitchesService();
+    this.switchesService = new SwitchesService();
+    this.userService = new UserService();
 
     // Si se pulsa el botón "Crear", se envía la petición a back y se vuelve al dashboard
     this.addEventListener('click', '#create', () => {
@@ -14,7 +15,7 @@ class SwitchAddComponent extends Fronty.ModelComponent {
       newSwitch.switch_name = $('#switch_name').val();
       newSwitch.switch_description = $('#switch_description').val();
       newSwitch.owner_name = this.userModel.currentUser;
-      this.postsService.addSwitch(newSwitch)
+      this.switchesService.addSwitch(newSwitch)
         .then(() => {
           this.router.goToPage('dashboard');
           // TODO mensaje de éxito

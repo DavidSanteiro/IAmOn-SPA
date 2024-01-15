@@ -33,6 +33,11 @@ class MainComponent extends Fronty.RouterComponent {
         component: new RegisterComponent(this.userModel, this),
         title: 'Register'
       },
+      forgot: {
+        component: new ForgotComponent(this.userModel, this),
+        title: 'Recover password'
+      },
+
       defaultRoute: 'dashboard'
     });
 
@@ -47,6 +52,18 @@ class MainComponent extends Fronty.RouterComponent {
   }
 
   start() {
+    // Recuperamos sesión de cookies si existe
+    let cookieValue_user_name = this.userService.getCookie("user_name");
+    let cookieValue_jwt_token = this.userService.getCookie("jwt_token");
+
+    if(cookieValue_user_name === "" || cookieValue_jwt_token === ""){
+      window.sessionStorage.removeItem('user_name');
+      window.sessionStorage.removeItem('jwt_token');
+    }else{
+      window.sessionStorage.setItem('user_name', cookieValue_user_name);
+      window.sessionStorage.setItem('jwt_token', cookieValue_jwt_token);
+    }
+
     super.start(); // now we can call start
   }
 

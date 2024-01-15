@@ -37,13 +37,21 @@ footer{
 }
 
 /* mobile layout: single colum, all items occupy the entire row, so wrap */
-header, main, footer {
+header, section, footer {
   flex-basis: 100%;
 }
 
+
+main {
+	display: flex;
+	justify-content: space-between; /* Distribuye el espacio entre los elementos */
+  flex-wrap: wrap;
+  }
+
+
 /* Medium devices (desktops, 960px and up) */
 @media (min-width: 1250px) {
-	main {
+	#mySwitches, #subscribedSwitches {
 		max-width: 48%;
 	}
 }
@@ -62,7 +70,7 @@ header, main, footer {
 		display: flex;
 	}
 
-	main {
+	#mySwitches, #subscribedSwitches {
 		max-width: 41%;
 	}
 }

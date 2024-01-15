@@ -15,8 +15,7 @@ require_once ("Mail.php");
 * @author lipido <lipido@gmail.com>
 */
 class SwitchMapper {
-
-	const DATE_FORMAT = "Y-m-d H:i:s";
+    const MYSQL_FORMAT = 'Y-m-d H:i:s';
 	const REGEX_UUID = "/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i";
 
 	/**
@@ -47,10 +46,9 @@ class SwitchMapper {
 
 		foreach ($switches_db as $switch) {
 			// Convertir la cadena de fecha y hora de MySQL en un objeto DateTime de PHP
-			$power_off = DateTime::createFromFormat(self::DATE_FORMAT, $switch["power_off"], new DateTimeZone('UTC'));
+			$power_off = new DateTime($switch["power_off"]);
 			if(isset($switch["last_power_on"])){
-				$last_power_on = DateTime::createFromFormat(self::DATE_FORMAT, $switch["last_power_on"], new DateTimeZone('UTC'));
-				$last_power_on = $last_power_on->setTimezone(new DateTimeZone('UTC'));
+				$last_power_on = new DateTime($switch["last_power_on"]);
 			} else{
 				$last_power_on = null;
 			}
@@ -81,9 +79,9 @@ class SwitchMapper {
 
 		foreach ($switches_db as $switch) {
 			// Convertir la cadena de fecha y hora de MySQL en un objeto DateTime de PHP
-			$power_off = DateTime::createFromFormat(self::DATE_FORMAT, $switch["power_off"], new DateTimeZone('UTC'));
+            $power_off = new DateTime($switch["power_off"]);
 			if(isset($switch["last_power_on"])){
-				$last_power_on = DateTime::createFromFormat(self::DATE_FORMAT, $switch["last_power_on"], new DateTimeZone('UTC'));
+                $last_power_on = new DateTime($switch["last_power_on"]);
 			} else{
 				$last_power_on = null;
 			}
@@ -193,9 +191,9 @@ class SwitchMapper {
 
 		if($switch != null) {
 
-            $power_off = DateTime::createFromFormat(self::DATE_FORMAT, $switch["power_off"], new DateTimeZone('UTC'));
+            $power_off = new DateTime($switch["power_off"]);
             if(isset($switch["last_power_on"])){
-                $last_power_on = DateTime::createFromFormat(self::DATE_FORMAT, $switch["last_power_on"], new DateTimeZone('UTC'));
+                $last_power_on = new DateTime($switch["last_power_on"]);
             } else{
                 $last_power_on = null;
             }
@@ -228,9 +226,9 @@ class SwitchMapper {
 		$stmt->execute(array($private_uuid));
 		$switch = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		$power_off = DateTime::createFromFormat(self::DATE_FORMAT, $switch["power_off"], new DateTimeZone('UTC'));
+        $power_off = new DateTime($switch["power_off"]);
 		if(isset($switch["last_power_on"])){
-			$last_power_on = DateTime::createFromFormat(self::DATE_FORMAT, $switch["last_power_on"], new DateTimeZone('UTC'));
+            $last_power_on = new DateTime($switch["last_power_on"]);
 		} else{
 			$last_power_on = null;
 		}
@@ -278,9 +276,8 @@ class SwitchMapper {
 		$stmt = $this->db->prepare("UPDATE Switch SET user_name=?, switch_name=?, description=?, private_uuid=?,
 				power_off=?, last_power_on=? WHERE public_uuid=?");
 		$stmt->execute(array($switch->getOwner()->getUsername(), $switch->getSwitchName(), $switch->getDescription(),
-			$switch->getPrivateUuid(), $switch->getPowerOff()->setTimezone(new DateTimeZone('UTC'))->format(self::DATE_FORMAT),
-			$switch->getLastPowerOn()?->setTimezone(new DateTimeZone('UTC'))->format(self::DATE_FORMAT), $switch->getPublicUuid()));
-
+			$switch->getPrivateUuid(), $switch->getPowerOff()->format(self::MYSQL_FORMAT),
+			$switch->getLastPowerOn()->format(self::MYSQL_FORMAT), $switch->getPublicUuid()));
 		return ($stmt->rowCount() == 1);
 	}
 
@@ -299,7 +296,7 @@ class SwitchMapper {
 	* @param MySwitch $switch The switch to be deleted
 	* @return void
 	* @throws PDOException if a database error occurs
-	* @throws Exception if can't update switch in database
+	* @throws Exception if can't delete switch in database
 	*/
 	public function delete(MySwitch $switch) : void {
 		$stmt = $this->db->prepare("DELETE FROM Switch WHERE public_uuid=?");

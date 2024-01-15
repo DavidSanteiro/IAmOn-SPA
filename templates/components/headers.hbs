@@ -5,7 +5,7 @@
       <a href="#dashboard"><img src="img/logo.png" class="logo_iamon" alt="Logo IAmOn"></a>
       <a href="#dashboard">Dashboard</a>
       <!--   TODO : El div con id=languajecontrol no se muy como acabó aquí -> revisar -->
-      <div id="languagecontrol">Loading...</div>
+
       <div class="user_info">
 
 <!--        TODO: Esta interfaz no aparece en determinadas páginas pero no depende de si está loggeado o no-->
@@ -14,7 +14,9 @@
         <img src="img/user.png" alt="Usuario">
         <p id="user_name">{{i18n "Hello %s" currentUser}}</p>
 <!--        TODO: Activar el logout-->
-        <p><a id="logout_header">(Logout)</a></p>
+          <a id="logout_header" class="switch_boton-label">
+            <img src="img/logout.svg"  alt="Usuario">
+          </a>
 
         {{else}}
 
@@ -28,7 +30,7 @@
       <a href="#dashboard"><img src="img/logo.png" class="logo_iamon" alt="Logo IAmOn"></a>
       <a href="#dashboard">Dashboard</a>
       <!--   TODO : El div con id=languajecontrol no se muy como acabó aquí -> revisar -->
-      <div id="languagecontrol">Loading...</div>
+
       <div class="user_info">
 
 <!--        TODO: Esta interfaz no aparece en determinadas páginas pero no depende de si está loggeado o no-->

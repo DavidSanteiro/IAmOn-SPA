@@ -1,0 +1,39 @@
+<main class="form-container">
+{{#if isLogged}}
+
+  {{i18n 'Your are logged. Logout first'}}
+
+{{else}}
+
+  <h2>{{i18n 'Have you forgotten your password?'}}</h2>
+  <h1>{{i18n "Let's recover access to your account"}}</h1>
+
+  <form>
+
+    <!--Cuando llega e introduce el correo-->
+      <label for="id_userEmailForgot" class="form-label">{{i18n 'Email'}}</label>
+      <input type="email" class="form-input" placeholder="{{i18n 'Email'}}" name="user_email" required
+             id="id_userEmailForgot" {{#if startedRecoveryProtocol}}readonly{{/if}}>
+      {{#i18n}}{{registerErrors.email}}{{/i18n}}
+
+    {{#if startedRecoveryProtocol}}
+      <!--  Añadido cuando introduce el correo y se le envía un código de seguridad-->
+      <label for="id_userSecurityCode" class="form-label">{{i18n 'Security code'}}</label>
+      <input type="number" class="form-input" placeholder="{{i18n 'Security code'}}" name="user_email"
+             id="id_userSecurityCode" required>
+
+      <label for="id_userPasswordForgot" class="form-label">{{i18n 'Password'}}</label>
+      <input type="password" class="form-input" placeholder="{{i18n 'Password'}}" name="user_password"
+             id="id_userPasswordForgot" required>
+      <input type="submit" class="form-submit" id='id_submit_2' value="{{i18n 'Change your password'}}">
+    {{else}}
+      <input type="submit" class="form-submit" id='id_submit_1' value="{{i18n 'Recover your password'}}">
+    {{/if}}
+
+
+  </form>
+
+  <p>{{i18n 'Do you remember your password?'}}<a class="link" href="#login" id="id_loginLink">{{i18n 'Go to login'}}</a></p>
+
+{{/if}}
+</main>

@@ -74,16 +74,4 @@ class SwitchesService {
       contentType: 'application/json'
     });
   }
-
-//TODO ajustar los siguientes métodos de Post a Switch
-
-  // createComment(postid, comment) {
-  //   return $.ajax({
-  //     url: AppConfig.backendServer+'/rest/post/' + postid + '/comment',
-  //     method: 'POST',
-  //     data: JSON.stringify(comment),
-  //     contentType: 'application/json'
-  //   });
-  // }
-
 }

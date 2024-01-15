@@ -51,7 +51,7 @@ class DashboardComponent extends Fronty.ModelComponent {
         .catch((xhr, errorThrown, statusText) => {
           alert('an error has occurred during request: ' + statusText + '.' + xhr.responseText);
         });
-      });
+    });
 
     this.addEventListener('change', '.changeSwitchState', (event) => {
       var public_uuid = event.target.getAttribute("data-public-uuid");
@@ -112,7 +112,7 @@ class DashboardComponent extends Fronty.ModelComponent {
             item.switch_description,
             item.switch_last_power_on,
             item.switch_power_off)
-      ));
+        ));
     });
   }
 

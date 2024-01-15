@@ -17,4 +17,16 @@ class UserModel extends Fronty.Model {
       self.isLogged = false;
     });
   }
+
+  startRecoveryProtocol(){
+    this.set((self) => {
+      self.startedRecoveryProtocol = true;
+    });
+  }
+
+  finishRecoveryProtocol(){
+    this.set((self) => {
+      self.startedRecoveryProtocol = false;
+    });
+  }
 }

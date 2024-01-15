@@ -8,7 +8,7 @@
 //   }
 // });
 
-Handlebars.registerHelper('i18n', function(key, value, opts) {
+Handlebars.registerHelper('i18n', function(key, value1, value2, opts) {
   let translated;
   if (typeof key == "string") {
     // inline - mode {{i18n 'key'}}
@@ -19,8 +19,11 @@ Handlebars.registerHelper('i18n', function(key, value, opts) {
   }
 
   // Si se proporcionó un valor, reemplaza '%s' en la cadena traducida
-  if (value !== undefined) {
-    translated = translated.replace('%s', value);
+  if (value1 !== undefined) {
+    translated = translated.replace('%s', value1);
+  }
+  if (value2 !== undefined) {
+    translated = translated.replace('%s', value2);
   }
 
   return new Handlebars.SafeString(translated);
