@@ -20,7 +20,6 @@ class SwitchEditComponent extends Fronty.ModelComponent {
             model.errors = []
           });
           this.router.goToPage('dashboard');
-          //TODO: mensaje de éxito
         })
         .fail((xhr, errorThrown, statusText) => {
           if (xhr.status == 400) {
@@ -41,7 +40,6 @@ class SwitchEditComponent extends Fronty.ModelComponent {
             model.errors = []
           });
           this.router.goToPage('dashboard');
-          //TODO: mensaje de éxito
         })
         .fail((xhr, errorThrown, statusText) => {
           if (xhr.status == 400) {
@@ -56,7 +54,6 @@ class SwitchEditComponent extends Fronty.ModelComponent {
 
     // Si se pulsa el botón cancelar, se vuelve a dashboard
     this.addEventListener('click', '#cancel', () => {
-      //TODO posible mensaje indicando que se va a perder la información que se ha introducido
       this.router.goToPage('dashboard');
     });
   }

@@ -121,10 +121,6 @@ header .user_info h4{
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-/*#icon_main_menu:hover{
-  cursor: pointer;
-}*/
   
 nav{
   display: none;
@@ -403,4 +399,8 @@ section{
   transform: translateY(30%);
   padding-bottom: -50px; /* Añadido margen superior para mover la imagen hacia abajo */
 
+}
+
+#logout_header{
+  cursor:pointer;
 }

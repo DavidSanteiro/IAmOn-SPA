@@ -19,7 +19,7 @@ function loadTextFile(url) {
 // Configuration
 var AppConfig = {
   backendServer: 'http://localhost'
-  //backendServer: '/mvcblog'
+  //backendServer: '/iamon'
 }
 
 Handlebars.templates = {};
@@ -27,8 +27,8 @@ Promise.all([
     I18n.initializeCurrentLanguage('js/i18n'),
 
     // Layouts
-    loadTextFile('templates/layouts/logged_out.hbs').then((source) =>
-      Handlebars.templates.loggedOut = Handlebars.compile(source)),
+    loadTextFile('templates/layouts/layout.hbs').then((source) =>
+      Handlebars.templates.layout = Handlebars.compile(source)),
 
     // Component supporting layout:
     loadTextFile('templates/components/headers.hbs').then((source) =>

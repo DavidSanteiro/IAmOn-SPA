@@ -15,7 +15,6 @@
           <form>
             <input type="hidden" value="{{this.public_uuid}}" name="switch_public_uuid">
 
-            <!--      TODO -> Se cambia el sistema respecto al MVC. En lugar de ser un  botón, aquí debería de ser funcional el switch -->
             <label class='switch'>
               <input type='checkbox' class='changeSwitchState' data-public-uuid='{{this.public_uuid}}' name='switch_state_{{this.public_uuid}}' {{#if isOn}} checked {{/if}} >
               <span class='slider round'></span>
@@ -60,11 +59,14 @@
 
           <p class="switch_owner">{{this.owner_name}}</p>
 
+          <label class="switch_boton-label">
           <img src="img/edit.png" alt="Editar" class="switch_button2 edit" height="30" width="30" data-public-uuid="{{this.public_uuid}}">
+          </label>
         </div>
 
       {{/each}}
     {{/unless}}
+
     <a id="new_switch">
       <img src="img/add.png" class="add_switch" alt="añadir switch">
     </a>
@@ -108,7 +110,9 @@
 
           <p class="switch_owner">{{this.owner_name}}</p>
 
+          <label class="switch_boton-label">
           <img src="img/info.png" alt="Info" class="switch_button2 view" height="30" width="30" data-public-uuid="{{this.public_uuid}}">
+          </label>
 
           <form>
             <input type="image" id="changeSubscriptionStateImgDashboard" src="img/alarm-bell_silenced.png"

@@ -8,7 +8,6 @@
           <div class="divSwitch {{#if selectedSwitch.isOn}} on {{else}} off {{/if}}">
             <form>
               <label class='switch'>
-  <!--              TODO: Aplicar en JS un listener sobre el checkbox para encender/apagar el switch-->
                 <input type='checkbox' id='changeSwitchState' name='switch_state' {{#if selectedSwitch.isOn}} checked {{/if}}>
                 <span class='slider round'></span>
               </label>
@@ -53,9 +52,10 @@
 
             <p class="switch_owner">{{selectedSwitch.owner_name}}</p>
 
-  <!--              TODO: Aplicar en JS un listener sobre icono para editarlo-->
+            <label class="switch_boton-label">
             <img src="img/edit.png" alt="Editar" id="edit_button" data-public-uuid="{{selectedSwitch.public_uuid}}"
-                 class="switch_button2" height="30" width="30"></a>
+                 class="switch_button2" height="30" width="30">
+            </label>
           </div>
       {{else}}
           <div class="divSwitch {{#if selectedSwitch.isOn}} on {{else}} off {{/if}}">
@@ -92,7 +92,6 @@
               {{else}}
                 <!-- Contenido a renderizar si currentuser no es igual a selectedSwitch.owner_name -->
                 <form>
-<!--              TODO: Aplicar en JS un listener sobre el botón para cambiar la suscripción-->
                   <input type="image" id="changeSubscriptionStateImg" src="img/{{#if selectedSwitch.is_subscribed}}alarm-bell_silenced.png{{else}}alarm-bell.png{{/if}}"
                          class="switch_button2" alt="Enviar" name="submit">
                 </form>
@@ -111,7 +110,6 @@
         <!-- Contenido a renderizar si currentuser es igual a selectedSwitch.owner_name -->
       {{else}}
         <!-- Contenido a renderizar si currentuser no es igual a selectedSwitch.owner_name -->
-<!--              TODO: Aplicar en JS un listener sobre el botón para cambiar la suscripción-->
 
         <button class="{{#if selectedSwitch.is_subscribed}}form-delete{{else}}form-submit{{/if}} button-all-width"
                 value="{{#if selectedSwitch.is_subscribed}}{{i18n "Unsubscribe from switch"}}{{else}}{{i18n "Subscribe to switch"}}{{/if}}" id="submitSubscription">
